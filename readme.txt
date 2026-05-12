@@ -4,7 +4,7 @@ Tags:               beds24, availability, calendar, booking, hotel, b&b
 Requires at least:  5.9
 Tested up to:       6.9
 Requires PHP:       7.4
-Stable tag:         1.3.4
+Stable tag:         1.3.5
 License:            GPLv2 or later
 License URI:        https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -60,6 +60,9 @@ Display a calendar for a whole property:
   availability data for 5 minutes and is cleared when the browser tab is closed.
 
 == Changelog ==
+
+= 1.3.5 =
+* Add Elementor Style tab with Colors, Typography, and Tiles sections — available/unavailable colours, calendar background, text, past days, month title, day headers, today ring, font controls, tile size, border radius, tile gap, and month gap are all now configurable directly in the Elementor editor
 
 = 1.3.4 =
 * Fix: Remove dark mode CSS — calendar now always renders in the light theme, preventing a dark background box from appearing on devices with dark mode enabled

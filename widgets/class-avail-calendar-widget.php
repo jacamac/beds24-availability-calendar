@@ -216,6 +216,247 @@ class Avail_Calendar_Widget extends \Elementor\Widget_Base {
 		);
 
 		$this->end_controls_section();
+
+		/* ══════════════════════════════════════════════════════
+		   STYLE TAB
+		   ══════════════════════════════════════════════════════ */
+
+		/* ── Section: Colors ── */
+		$this->start_controls_section(
+			'section_style_colors',
+			array(
+				'label' => esc_html__( 'Colors', 'availability-calendar-for-beds24' ),
+				'tab'   => \Elementor\Controls_Manager::TAB_STYLE,
+			)
+		);
+
+		$this->add_control(
+			'heading_avail_colors',
+			array(
+				'label' => esc_html__( 'Availability', 'availability-calendar-for-beds24' ),
+				'type'  => \Elementor\Controls_Manager::HEADING,
+			)
+		);
+
+		$this->add_control(
+			'color_available',
+			array(
+				'label'     => esc_html__( 'Available', 'availability-calendar-for-beds24' ),
+				'type'      => \Elementor\Controls_Manager::COLOR,
+				'default'   => '#34a853',
+				'selectors' => array(
+					'{{WRAPPER}} .bac-day.bac-available'              => 'background: {{VALUE}};',
+					'{{WRAPPER}} .bac-day.bac-split-avail-am::before' => 'background: {{VALUE}};',
+					'{{WRAPPER}} .bac-day.bac-split-avail-pm'         => 'background: {{VALUE}};',
+				),
+			)
+		);
+
+		$this->add_control(
+			'color_unavailable',
+			array(
+				'label'     => esc_html__( 'Unavailable', 'availability-calendar-for-beds24' ),
+				'type'      => \Elementor\Controls_Manager::COLOR,
+				'default'   => '#ea4335',
+				'selectors' => array(
+					'{{WRAPPER}} .bac-day.bac-unavailable'            => 'background: {{VALUE}};',
+					'{{WRAPPER}} .bac-day.bac-split-avail-am'         => 'background: {{VALUE}};',
+					'{{WRAPPER}} .bac-day.bac-split-avail-pm::before' => 'background: {{VALUE}};',
+				),
+			)
+		);
+
+		$this->add_control(
+			'heading_calendar_colors',
+			array(
+				'label'     => esc_html__( 'Calendar', 'availability-calendar-for-beds24' ),
+				'type'      => \Elementor\Controls_Manager::HEADING,
+				'separator' => 'before',
+			)
+		);
+
+		$this->add_control(
+			'color_background',
+			array(
+				'label'     => esc_html__( 'Background', 'availability-calendar-for-beds24' ),
+				'type'      => \Elementor\Controls_Manager::COLOR,
+				'default'   => '#ffffff',
+				'selectors' => array(
+					'{{WRAPPER}} .bac-wrapper' => 'background: {{VALUE}};',
+				),
+			)
+		);
+
+		$this->add_control(
+			'color_text',
+			array(
+				'label'     => esc_html__( 'Text', 'availability-calendar-for-beds24' ),
+				'type'      => \Elementor\Controls_Manager::COLOR,
+				'default'   => '#1a1a1a',
+				'selectors' => array(
+					'{{WRAPPER}} .bac-wrapper'    => 'color: {{VALUE}};',
+					'{{WRAPPER}} .bac-nav button' => 'color: {{VALUE}};',
+				),
+			)
+		);
+
+		$this->add_control(
+			'color_past',
+			array(
+				'label'     => esc_html__( 'Past Days', 'availability-calendar-for-beds24' ),
+				'type'      => \Elementor\Controls_Manager::COLOR,
+				'default'   => '#cccccc',
+				'selectors' => array(
+					'{{WRAPPER}} .bac-day.bac-past' => 'color: {{VALUE}};',
+				),
+			)
+		);
+
+		$this->add_control(
+			'color_month_title',
+			array(
+				'label'     => esc_html__( 'Month Title', 'availability-calendar-for-beds24' ),
+				'type'      => \Elementor\Controls_Manager::COLOR,
+				'default'   => '#1a1a1a',
+				'selectors' => array(
+					'{{WRAPPER}} .bac-month-title' => 'color: {{VALUE}};',
+				),
+			)
+		);
+
+		$this->add_control(
+			'color_day_headers',
+			array(
+				'label'     => esc_html__( 'Day Headers', 'availability-calendar-for-beds24' ),
+				'type'      => \Elementor\Controls_Manager::COLOR,
+				'default'   => '#999999',
+				'selectors' => array(
+					'{{WRAPPER}} .bac-dow-cell' => 'color: {{VALUE}};',
+					'{{WRAPPER}} .bac-status'   => 'color: {{VALUE}};',
+				),
+			)
+		);
+
+		$this->add_control(
+			'color_today',
+			array(
+				'label'     => esc_html__( 'Today Ring', 'availability-calendar-for-beds24' ),
+				'type'      => \Elementor\Controls_Manager::COLOR,
+				'default'   => '#1a1a1a',
+				'selectors' => array(
+					'{{WRAPPER}} .bac-day.bac-today' => 'outline-color: {{VALUE}};',
+				),
+			)
+		);
+
+		$this->end_controls_section();
+
+		/* ── Section: Typography ── */
+		$this->start_controls_section(
+			'section_style_typography',
+			array(
+				'label' => esc_html__( 'Typography', 'availability-calendar-for-beds24' ),
+				'tab'   => \Elementor\Controls_Manager::TAB_STYLE,
+			)
+		);
+
+		$this->add_group_control(
+			\Elementor\Group_Control_Typography::get_type(),
+			array(
+				'name'     => 'typography_calendar',
+				'label'    => esc_html__( 'Calendar Font', 'availability-calendar-for-beds24' ),
+				'selector' => '{{WRAPPER}} .bac-wrapper',
+			)
+		);
+
+		$this->add_group_control(
+			\Elementor\Group_Control_Typography::get_type(),
+			array(
+				'name'     => 'typography_month_title',
+				'label'    => esc_html__( 'Month Title', 'availability-calendar-for-beds24' ),
+				'selector' => '{{WRAPPER}} .bac-month-title',
+			)
+		);
+
+		$this->end_controls_section();
+
+		/* ── Section: Tiles ── */
+		$this->start_controls_section(
+			'section_style_tiles',
+			array(
+				'label' => esc_html__( 'Tiles', 'availability-calendar-for-beds24' ),
+				'tab'   => \Elementor\Controls_Manager::TAB_STYLE,
+			)
+		);
+
+		$this->add_control(
+			'tile_size',
+			array(
+				'label'      => esc_html__( 'Tile Size', 'availability-calendar-for-beds24' ),
+				'type'       => \Elementor\Controls_Manager::SLIDER,
+				'size_units' => array( 'px' ),
+				'range'      => array(
+					'px' => array( 'min' => 24, 'max' => 60, 'step' => 1 ),
+				),
+				'default'    => array( 'unit' => 'px', 'size' => 36 ),
+				'selectors'  => array(
+					'{{WRAPPER}} .bac-day'     => 'width: {{SIZE}}{{UNIT}}; height: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}} .bac-dow-row' => 'grid-template-columns: repeat(7, {{SIZE}}{{UNIT}});',
+					'{{WRAPPER}} .bac-grid'    => 'grid-template-columns: repeat(7, {{SIZE}}{{UNIT}});',
+				),
+			)
+		);
+
+		$this->add_control(
+			'tile_radius',
+			array(
+				'label'      => esc_html__( 'Border Radius', 'availability-calendar-for-beds24' ),
+				'type'       => \Elementor\Controls_Manager::SLIDER,
+				'size_units' => array( 'px' ),
+				'range'      => array(
+					'px' => array( 'min' => 0, 'max' => 50, 'step' => 1 ),
+				),
+				'default'    => array( 'unit' => 'px', 'size' => 7 ),
+				'selectors'  => array(
+					'{{WRAPPER}} .bac-day' => 'border-radius: {{SIZE}}{{UNIT}};',
+				),
+			)
+		);
+
+		$this->add_control(
+			'tile_gap',
+			array(
+				'label'      => esc_html__( 'Tile Gap', 'availability-calendar-for-beds24' ),
+				'type'       => \Elementor\Controls_Manager::SLIDER,
+				'size_units' => array( 'px' ),
+				'range'      => array(
+					'px' => array( 'min' => 0, 'max' => 16, 'step' => 1 ),
+				),
+				'default'    => array( 'unit' => 'px', 'size' => 4 ),
+				'selectors'  => array(
+					'{{WRAPPER}} .bac-dow-row' => 'gap: {{SIZE}}{{UNIT}}; margin-bottom: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}} .bac-grid'    => 'gap: {{SIZE}}{{UNIT}};',
+				),
+			)
+		);
+
+		$this->add_control(
+			'month_gap',
+			array(
+				'label'      => esc_html__( 'Month Gap', 'availability-calendar-for-beds24' ),
+				'type'       => \Elementor\Controls_Manager::SLIDER,
+				'size_units' => array( 'px' ),
+				'range'      => array(
+					'px' => array( 'min' => 0, 'max' => 80, 'step' => 4 ),
+				),
+				'default'    => array( 'unit' => 'px', 'size' => 28 ),
+				'selectors'  => array(
+					'{{WRAPPER}} .bac-strip' => 'gap: {{SIZE}}{{UNIT}};',
+				),
+			)
+		);
+
+		$this->end_controls_section();
 	}
 
 	// ─── Render (front-end + Elementor preview) ────────────
