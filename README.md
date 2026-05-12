@@ -19,6 +19,17 @@ No jQuery. No build step. No external dependencies beyond the Beds24 availabilit
 
 <img width="914" height="332" alt="image" src="https://github.com/user-attachments/assets/e805b885-db1a-4cfd-8cd5-09d0c0b995e7" />
 
+## Elementor Integration
+
+<img width="275" height="544" alt="image" src="https://github.com/user-attachments/assets/2cffcbd2-d318-445b-8c86-bd1205090236" />
+
+<img width="275" height="544" alt="image" src="https://github.com/user-attachments/assets/a2fb3c9f-414a-4de0-b862-56d6fa33f510" />
+
+<img width="275" height="544" alt="image" src="https://github.com/user-attachments/assets/faf12639-a844-46e7-8fcf-663bc9abc39a" />
+
+Note that the number of months can be selected independantly for desktop, tablet, and mobile size.
+
+
 ---
 
 ## Installation
