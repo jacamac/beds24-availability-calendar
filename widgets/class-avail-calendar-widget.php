@@ -123,22 +123,30 @@ class Avail_Calendar_Widget extends \Elementor\Widget_Base {
 			)
 		);
 
-		$this->add_control(
+		$this->add_responsive_control(
 			'nummonths',
 			array(
-				'label'      => esc_html__( 'Months to Display', 'beds24-availability-calendar' ),
-				'type'       => \Elementor\Controls_Manager::SLIDER,
-				'size_units' => array(),
-				'range'      => array(
+				'label'          => esc_html__( 'Months to Display', 'beds24-availability-calendar' ),
+				'type'           => \Elementor\Controls_Manager::SLIDER,
+				'size_units'     => array(),
+				'range'          => array(
 					'px' => array(
 						'min'  => 1,
 						'max'  => 24,
 						'step' => 1,
 					),
 				),
-				'default'    => array(
+				'default'        => array(
 					'unit' => 'px',
-					'size' => 5,
+					'size' => 3,
+				),
+				'tablet_default' => array(
+					'unit' => 'px',
+					'size' => 2,
+				),
+				'mobile_default' => array(
+					'unit' => 'px',
+					'size' => 1,
 				),
 			)
 		);
@@ -220,12 +228,14 @@ class Avail_Calendar_Widget extends \Elementor\Widget_Base {
 
 		// Build raw values from widget settings.
 		$raw = array(
-			'roomid'     => $s['roomid'] ?? '',
-			'propid'     => $s['propid'] ?? '',
-			'nummonths'  => (int) ( $s['nummonths']['size'] ?? 5 ),
-			'startmonth' => $s['startmonth'] ?? '',
-			'startyear'  => $s['startyear'] ?? '',
-			'lang'       => $s['lang'] ?? '',
+			'roomid'          => $s['roomid'] ?? '',
+			'propid'          => $s['propid'] ?? '',
+			'nummonths'       => (int) ( $s['nummonths']['size'] ?? 3 ),
+			'nummonthstablet' => (int) ( $s['nummonths_tablet']['size'] ?? 0 ),
+			'nummonthsmobile' => (int) ( $s['nummonths_mobile']['size'] ?? 0 ),
+			'startmonth'      => $s['startmonth'] ?? '',
+			'startyear'       => $s['startyear'] ?? '',
+			'lang'            => $s['lang'] ?? '',
 		);
 
 		$config = bac_sanitize_config( $raw );

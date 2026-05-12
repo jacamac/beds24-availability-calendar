@@ -236,6 +236,15 @@ function bac_sanitize_config( array $raw ): array {
 	$nummonths           = max( 1, min( 24, $raw_months ? $raw_months : 5 ) );
 	$config['numMonths'] = $nummonths;
 
+	$tablet_months = absint( $raw['nummonthstablet'] ?? 0 );
+	if ( $tablet_months >= 1 ) {
+		$config['numMonthsTablet'] = min( 24, $tablet_months );
+	}
+	$mobile_months = absint( $raw['nummonthsmobile'] ?? 0 );
+	if ( $mobile_months >= 1 ) {
+		$config['numMonthsMobile'] = min( 24, $mobile_months );
+	}
+
 	$startmonth = absint( $raw['startmonth'] ?? 0 );
 	if ( $startmonth >= 1 && $startmonth <= 12 ) {
 		$config['startMonth'] = $startmonth;

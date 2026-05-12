@@ -35,13 +35,15 @@ class Beds24Calendar {
     constructor(config) {
         // Merge caller config with safe defaults
         this.cfg = Object.assign({
-            containerId: null,
-            propid:      null,
-            roomid:      null,
-            numMonths:   5,
-            startMonth:  null,
-            startYear:   null,
-            lang:        'en',
+            containerId:    null,
+            propid:         null,
+            roomid:         null,
+            numMonths:      5,
+            numMonthsTablet: null,
+            numMonthsMobile: null,
+            startMonth:     null,
+            startYear:      null,
+            lang:           'en',
         }, config);
 
         this.container = document.getElementById(this.cfg.containerId);
@@ -68,6 +70,18 @@ class Beds24Calendar {
                 this._fetchAvailability().then(() => this._render());
             }, this.CACHE_TTL);
         });
+
+        // Re-render only when the viewport crosses a breakpoint tier
+        if (this.cfg.numMonthsTablet || this.cfg.numMonthsMobile) {
+            this._currentTier = this._breakpointTier();
+            window.addEventListener('resize', () => {
+                const tier = this._breakpointTier();
+                if (tier !== this._currentTier) {
+                    this._currentTier = tier;
+                    this._render();
+                }
+            });
+        }
     }
 
     /* ─── DOM scaffold ────────────────────────────────────── */
@@ -108,12 +122,27 @@ class Beds24Calendar {
         });
     }
 
+    /* ─── Responsive numMonths ───────────────────────────────── */
+    _breakpointTier() {
+        const w = window.innerWidth;
+        if (w < 768)  return 'mobile';
+        if (w < 1025) return 'tablet';
+        return 'desktop';
+    }
+
+    _getNumMonths() {
+        const tier = this._breakpointTier();
+        if (tier === 'mobile' && this.cfg.numMonthsMobile) return this.cfg.numMonthsMobile;
+        if (tier === 'tablet' && this.cfg.numMonthsTablet) return this.cfg.numMonthsTablet;
+        return this.cfg.numMonths;
+    }
+
     /* ─── Render all visible months ────────────────────────── */
     _render() {
         this._strip.innerHTML = '';
         let y = this.viewYear;
         let m = this.viewMonth;
-        for (let i = 0; i < this.cfg.numMonths; i++) {
+        for (let i = 0; i < this._getNumMonths(); i++) {
             this._strip.appendChild(this._renderMonth(y, m));
             if (++m > 12) { m = 1; y++; }
         }
