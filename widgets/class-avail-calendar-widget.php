@@ -243,32 +243,31 @@ class Avail_Calendar_Widget extends \Elementor\Widget_Base {
 	 * Render the widget output on the frontend.
 	 */
 	protected function render(): void {
+		// get_settings_for_display() resolves dynamic tags (e.g. ACF roomid/propid).
+		//
+		// For the responsive slider we use get_data('settings') — the raw stored
+		// element JSON — instead of get_settings(). Elementor skips register_controls()
+		// on the front-end as a performance optimisation; without it, get_settings()
+		// cannot apply control defaults, so nummonths_tablet / nummonths_mobile come
+		// back missing and our code would incorrectly fall back to the desktop value.
+		//
+		// When tablet/mobile are absent from get_data('settings') the user never moved
+		// those sliders away from their defaults, so we fall back to the same values
+		// declared as tablet_default / mobile_default in register_controls() below.
 		$s_display = $this->get_settings_for_display();
-		$s_raw     = $this->get_settings();
 		$s_data    = $this->get_data( 'settings' );
-
-		// --- BAC DEBUG: trace responsive slider sources ---
-		$context = \Elementor\Plugin::$instance->editor->is_edit_mode() ? 'EDITOR' : 'FRONTEND';
-		$keys    = array( 'nummonths', 'nummonths_tablet', 'nummonths_mobile' );
-		$trace   = array();
-		foreach ( $keys as $k ) {
-			$trace[ $k ] = array(
-				'get_settings_for_display' => $s_display[ $k ] ?? '(missing)',
-				'get_settings'             => $s_raw[ $k ]     ?? '(missing)',
-				'get_data(settings)'       => is_array( $s_data ) ? ( $s_data[ $k ] ?? '(missing)' ) : '(get_data returned non-array: ' . gettype( $s_data ) . ')',
-			);
+		if ( ! is_array( $s_data ) ) {
+			$s_data = array();
 		}
-		// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
-		error_log( '[BAC ' . $context . '] nummonths trace: ' . wp_json_encode( $trace ) );
-		// --- END BAC DEBUG ---
 
 		// Build raw values from widget settings.
 		$raw = array(
 			'roomid'          => $s_display['roomid'] ?? '',
 			'propid'          => $s_display['propid'] ?? '',
-			'nummonths'       => $this->slider_size( $s_raw['nummonths'] ?? array(), 3 ),
-			'nummonthstablet' => $this->slider_size( $s_raw['nummonths_tablet'] ?? array(), 0 ),
-			'nummonthsmobile' => $this->slider_size( $s_raw['nummonths_mobile'] ?? array(), 0 ),
+			'nummonths'       => $this->slider_size( $s_data['nummonths'] ?? array(), 3 ),
+			// Fallbacks 2 / 1 must match tablet_default / mobile_default in register_controls().
+			'nummonthstablet' => $this->slider_size( $s_data['nummonths_tablet'] ?? array(), 2 ),
+			'nummonthsmobile' => $this->slider_size( $s_data['nummonths_mobile'] ?? array(), 1 ),
 			'startmonth'      => $s_display['startmonth'] ?? '',
 			'startyear'       => $s_display['startyear'] ?? '',
 			'lang'            => $s_display['lang'] ?? '',
