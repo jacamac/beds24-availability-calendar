@@ -243,21 +243,23 @@ class Avail_Calendar_Widget extends \Elementor\Widget_Base {
 	 * Render the widget output on the frontend.
 	 */
 	protected function render(): void {
-		// Use get_settings() (raw DB values) so that breakpoint-specific keys
-		// (nummonths_tablet, nummonths_mobile) are always present. The
-		// get_settings_for_display() cascade can resolve them away server-side.
-		$s = $this->get_settings();
+		// get_settings_for_display() resolves Elementor dynamic tags (e.g. ACF fields
+		// used for roomid/propid). get_settings() returns raw DB values so that
+		// breakpoint-specific slider keys (nummonths_tablet, nummonths_mobile) are
+		// present before get_settings_for_display() cascades them into the desktop value.
+		$s_display = $this->get_settings_for_display();
+		$s_raw     = $this->get_settings();
 
 		// Build raw values from widget settings.
 		$raw = array(
-			'roomid'          => $s['roomid'] ?? '',
-			'propid'          => $s['propid'] ?? '',
-			'nummonths'       => $this->slider_size( $s['nummonths'] ?? array(), 3 ),
-			'nummonthstablet' => $this->slider_size( $s['nummonths_tablet'] ?? array(), 0 ),
-			'nummonthsmobile' => $this->slider_size( $s['nummonths_mobile'] ?? array(), 0 ),
-			'startmonth'      => $s['startmonth'] ?? '',
-			'startyear'       => $s['startyear'] ?? '',
-			'lang'            => $s['lang'] ?? '',
+			'roomid'          => $s_display['roomid'] ?? '',
+			'propid'          => $s_display['propid'] ?? '',
+			'nummonths'       => $this->slider_size( $s_display['nummonths'] ?? array(), 3 ),
+			'nummonthstablet' => $this->slider_size( $s_raw['nummonths_tablet'] ?? array(), 0 ),
+			'nummonthsmobile' => $this->slider_size( $s_raw['nummonths_mobile'] ?? array(), 0 ),
+			'startmonth'      => $s_display['startmonth'] ?? '',
+			'startyear'       => $s_display['startyear'] ?? '',
+			'lang'            => $s_display['lang'] ?? '',
 		);
 
 		$config = bac_sanitize_config( $raw );

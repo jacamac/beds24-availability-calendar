@@ -63,6 +63,24 @@ if ( file_exists( $bac_puc ) ) {
 	} else {
 		$bac_checker->getVcsApi()->enableReleaseAssets(); // @phpstan-ignore method.notFound (GitHubApi uses ReleaseAssetSupport trait; base Api class return type hides it)
 	}
+
+	// PUC reads the remote plugin file at the release tag and uses its Version
+	// header — which is always the static placeholder in the repo source.  The
+	// release download URL is the one thing that reliably encodes the real tag
+	// version (.../releases/download/v1.2.1/... or .../zipball/v1.2.1).
+	// Re-derive the version from that URL so the comparison is correct.
+	add_filter(
+		'puc_request_info_result-beds24-availability-calendar',
+		function ( $info ) {
+			if ( $info !== null && ! empty( $info->download_url ) ) {
+				if ( preg_match( '~(?:releases/download|zipball)/v?([\d.]+)~', $info->download_url, $m ) ) {
+					$info->version = $m[1];
+				}
+			}
+			return $info;
+		}
+	);
+
 	unset( $bac_checker );
 }
 unset( $bac_puc );

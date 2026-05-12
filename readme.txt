@@ -61,6 +61,10 @@ Display a calendar for a whole property:
 
 == Changelog ==
 
+= 1.2.1 =
+* Fix: Elementor widget now resolves ACF dynamic tag values (e.g. roomid/propid) correctly — switching from get_settings() back to get_settings_for_display() for text controls while preserving raw breakpoint slider values via get_settings()
+* Fix: Plugin Update Checker now correctly detects available versions — version is derived from the GitHub release download URL rather than the static placeholder in the repo source file
+
 = 1.2.0 =
 * Fix: Elementor responsive months-per-device setting now correctly controls desktop, tablet, and mobile display counts
 * Fix: viewport resize listener is now always wired up so switching device sizes re-renders the calendar without a page reload
