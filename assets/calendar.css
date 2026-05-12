@@ -55,19 +55,6 @@
     max-width: 1100px;
 }
 
-/* ── Dark mode ── */
-@media (prefers-color-scheme: dark) {
-    .bac-wrapper {
-        --cal-bg:         #1c1c1e;
-        --cal-text:       #f0f0f0;
-        --cal-muted:      #444444;
-        --cal-header:     #f0f0f0;
-        --cal-dow:        #666666;
-        --cal-nav-hover:  #2c2c2e;
-        --cal-today-ring: #f0f0f0;
-    }
-}
-
 /* ── Navigation ── */
 .bac-nav {
     display: flex;
