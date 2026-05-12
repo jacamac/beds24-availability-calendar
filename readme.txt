@@ -4,7 +4,7 @@ Tags:               beds24, availability, calendar, booking, hotel, b&b
 Requires at least:  5.9
 Tested up to:       6.7
 Requires PHP:       7.4
-Stable tag:         1.1.2
+Stable tag:         1.1.5
 License:            GPLv2 or later
 License URI:        https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -61,6 +61,10 @@ Display a calendar for a whole property:
 
 == Changelog ==
 
+= 1.1.5 =
+* Add Plugin Update Checker (YahnisElsts/plugin-update-checker v5) — WordPress admin now shows update notifications and release notes when a new version is published on GitHub
+* To track a development branch instead of tagged releases, define BAC_UPDATE_BRANCH in wp-config.php
+
 = 1.1.4 =
 * Elementor widget: Months to Display slider range reduced to 1–12; defaults 3 / 2 / 1 for desktop / tablet / mobile
 
@@ -82,6 +86,9 @@ Display a calendar for a whole property:
 * Initial release
 
 == Upgrade Notice ==
+
+= 1.1.5 =
+Adds automatic update notifications in the WordPress admin — no manual zip download needed for future releases.
 
 = 1.1.4 =
 Elementor widget slider now capped at 12 months with responsive defaults.

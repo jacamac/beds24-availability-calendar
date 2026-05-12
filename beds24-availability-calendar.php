@@ -39,6 +39,36 @@ define( 'BAC_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 
 /*
 ═══════════════════════════════════════════════════════════
+	PLUGIN UPDATE CHECKER
+	Uses YahnisElsts/plugin-update-checker to surface update
+	notifications in the WordPress admin when a new GitHub
+	Release is published.
+
+	Default: checks tagged releases on the 'main' branch.
+	To track a development branch instead, add to wp-config.php:
+		define( 'BAC_UPDATE_BRANCH', 'develop' );
+	═══════════════════════════════════════════════════════════
+*/
+
+$bac_puc = BAC_PLUGIN_DIR . 'vendor/yahnis-elsts/plugin-update-checker/plugin-update-checker.php';
+if ( file_exists( $bac_puc ) ) {
+	require_once $bac_puc;
+	$bac_checker = YahnisElsts\PluginUpdateChecker\v5\PucFactory::buildUpdateChecker(
+		'https://github.com/jacamac/beds24-availability-calendar/',
+		__FILE__,
+		'beds24-availability-calendar'
+	);
+	if ( defined( 'BAC_UPDATE_BRANCH' ) && BAC_UPDATE_BRANCH ) {
+		$bac_checker->setBranch( BAC_UPDATE_BRANCH );
+	} else {
+		$bac_checker->getVcsApi()->enableReleaseAssets(); // @phpstan-ignore method.notFound (GitHubApi uses ReleaseAssetSupport trait; base Api class return type hides it)
+	}
+	unset( $bac_checker );
+}
+unset( $bac_puc );
+
+/*
+═══════════════════════════════════════════════════════════
 	LANGUAGE DETECTION
 	Priority:
 	1. Explicit lang attribute/setting on the instance

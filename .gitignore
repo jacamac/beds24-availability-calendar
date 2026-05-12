@@ -1,6 +1,5 @@
-# Composer dependencies — never committed, installed by CI
+# Composer dependencies — vendor/ excluded; lock file committed for reproducible CI builds
 vendor/
-composer.lock
 
 # IDE
 .vscode/
