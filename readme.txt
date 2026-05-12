@@ -61,6 +61,18 @@ Display a calendar for a whole property:
 
 == Changelog ==
 
+= 1.3.4 =
+* Fix: Remove dark mode CSS — calendar now always renders in the light theme, preventing a dark background box from appearing on devices with dark mode enabled
+
+= 1.3.3 =
+* Fix: Responsive slider values (numMonthsTablet / numMonthsMobile) now read from get_data('settings') with control-default fallbacks — Elementor skips register_controls() on the front-end when applying a Single Post Template, so get_settings() could not resolve tablet/mobile defaults, causing both to fall back to the desktop value
+
+= 1.3.2 =
+* Debug: Temporary release adding error_log traces to identify Elementor responsive slider data source — superseded by 1.3.3
+
+= 1.3.1 =
+* Fix: Attempted fix for Elementor responsive slider cascade (superseded by 1.3.3)
+
 = 1.3.0 =
 * Rename: plugin is now "Availability Calendar for Beds24" — new slug availability-calendar-for-beds24, new main file availability-calendar-for-beds24.php
 * Rename: JavaScript class renamed from Beds24Calendar to AvailCalendar
