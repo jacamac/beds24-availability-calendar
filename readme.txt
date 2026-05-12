@@ -61,10 +61,27 @@ Display a calendar for a whole property:
 
 == Changelog ==
 
+= 1.1.4 =
+* Elementor widget: Months to Display slider range reduced to 1–12; defaults 3 / 2 / 1 for desktop / tablet / mobile
+
+= 1.1.3 =
+* Release workflow: version number is now injected automatically from the git tag — no manual bump needed
+
+= 1.1.2 =
+* Elementor widget: Months to Display is now a responsive control — configure different values for desktop, tablet, and mobile
+
+= 1.1.1 =
+* Fix: moved assets (calendar.css, calendar.js) into assets/ subdirectory to resolve 404 errors on deployed sites
+
+= 1.1.0 =
+* Add Elementor widget with full settings panel (room/property ID, months, start date, language)
+* Add automatic language detection via TranslatePress and WordPress locale (BCP-47)
+* Add GitHub Actions CI (PHPCS + PHPStan) and automated release workflow
+
 = 1.0.0 =
 * Initial release
 
 == Upgrade Notice ==
 
-= 1.0.0 =
-Initial release.
+= 1.1.4 =
+Elementor widget slider now capped at 12 months with responsive defaults.

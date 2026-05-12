@@ -57,15 +57,26 @@ jobs:
           zip -r beds24-availability-calendar-${{ steps.version.outputs.VERSION }}.zip \
             beds24-availability-calendar/
 
+      - name: Generate release notes from readme.txt
+        run: |
+          VERSION="${{ steps.version.outputs.VERSION }}"
+          {
+            echo "## What's new in v${VERSION}"
+            echo ""
+            awk "/^= ${VERSION} =/{found=1;next} found && /^= /{exit} found && NF{print}" readme.txt
+            echo ""
+            echo "---"
+            echo ""
+            echo "**Installation:** Download the zip below and install via **WordPress Admin → Plugins → Add New → Upload Plugin**."
+            echo ""
+            echo "If you use [Git Updater](https://git-updater.com/), this release will be detected automatically."
+          } > /tmp/release-notes.md
+
       - name: Create GitHub Release and upload zip
         uses: softprops/action-gh-release@v2
         with:
           name: "Release v${{ steps.version.outputs.VERSION }}"
-          body: |
-            ## Installation
-            Download the zip below and install via **WordPress Admin → Plugins → Add New → Upload Plugin**.
-
-            Or if you use [Git Updater](https://git-updater.com/), this release will be detected automatically.
+          body_path: /tmp/release-notes.md
           files: /tmp/build/beds24-availability-calendar-${{ steps.version.outputs.VERSION }}.zip
           draft: false
           prerelease: false

@@ -132,7 +132,7 @@ class Avail_Calendar_Widget extends \Elementor\Widget_Base {
 				'range'          => array(
 					'px' => array(
 						'min'  => 1,
-						'max'  => 24,
+						'max'  => 12,
 						'step' => 1,
 					),
 				),

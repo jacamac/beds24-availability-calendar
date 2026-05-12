@@ -232,17 +232,17 @@ function bac_sanitize_config( array $raw ): array {
 		$config['propid'] = $propid;
 	}
 
-	$raw_months          = absint( $raw['nummonths'] ?? 5 );
-	$nummonths           = max( 1, min( 24, $raw_months ? $raw_months : 5 ) );
+	$raw_months          = absint( $raw['nummonths'] ?? 3 );
+	$nummonths           = max( 1, min( 12, $raw_months ? $raw_months : 3 ) );
 	$config['numMonths'] = $nummonths;
 
 	$tablet_months = absint( $raw['nummonthstablet'] ?? 0 );
 	if ( $tablet_months >= 1 ) {
-		$config['numMonthsTablet'] = min( 24, $tablet_months );
+		$config['numMonthsTablet'] = min( 12, $tablet_months );
 	}
 	$mobile_months = absint( $raw['nummonthsmobile'] ?? 0 );
 	if ( $mobile_months >= 1 ) {
-		$config['numMonthsMobile'] = min( 24, $mobile_months );
+		$config['numMonthsMobile'] = min( 12, $mobile_months );
 	}
 
 	$startmonth = absint( $raw['startmonth'] ?? 0 );
