@@ -1,12 +1,12 @@
 <?php
 /**
- * Beds24 Availability Calendar — Elementor Widget
+ * Availability Calendar for Beds24 — Elementor Widget
  *
  * Copyright (C) 2026 Jacques Leisy
  * License: GPL-2.0-or-later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  *
- * @package Beds24_Availability_Calendar
+ * @package Availability_Calendar_For_Beds24
  */
 
 namespace BAC;
@@ -35,7 +35,7 @@ class Avail_Calendar_Widget extends \Elementor\Widget_Base {
 	 * @return string Widget title.
 	 */
 	public function get_title(): string {
-		return esc_html__( 'Availability Calendar', 'beds24-availability-calendar' );
+		return esc_html__( 'Availability Calendar', 'availability-calendar-for-beds24' );
 	}
 
 	/**
@@ -76,7 +76,7 @@ class Avail_Calendar_Widget extends \Elementor\Widget_Base {
 		$this->start_controls_section(
 			'section_connection',
 			array(
-				'label' => esc_html__( 'Beds24 Connection', 'beds24-availability-calendar' ),
+				'label' => esc_html__( 'Beds24 Connection', 'availability-calendar-for-beds24' ),
 				'tab'   => \Elementor\Controls_Manager::TAB_CONTENT,
 			)
 		);
@@ -86,29 +86,29 @@ class Avail_Calendar_Widget extends \Elementor\Widget_Base {
 			array(
 				'type'        => \Elementor\Controls_Manager::NOTICE,
 				'notice_type' => 'info',
-				'content'     => esc_html__( 'Set either a Room ID or a Property ID — not both.', 'beds24-availability-calendar' ),
+				'content'     => esc_html__( 'Set either a Room ID or a Property ID — not both.', 'availability-calendar-for-beds24' ),
 			)
 		);
 
 		$this->add_control(
 			'roomid',
 			array(
-				'label'       => esc_html__( 'Room ID', 'beds24-availability-calendar' ),
+				'label'       => esc_html__( 'Room ID', 'availability-calendar-for-beds24' ),
 				'type'        => \Elementor\Controls_Manager::TEXT,
 				'input_type'  => 'number',
-				'placeholder' => esc_html__( 'e.g. 12345', 'beds24-availability-calendar' ),
-				'description' => esc_html__( 'Beds24 room ID for a single room calendar.', 'beds24-availability-calendar' ),
+				'placeholder' => esc_html__( 'e.g. 12345', 'availability-calendar-for-beds24' ),
+				'description' => esc_html__( 'Beds24 room ID for a single room calendar.', 'availability-calendar-for-beds24' ),
 			)
 		);
 
 		$this->add_control(
 			'propid',
 			array(
-				'label'       => esc_html__( 'Property ID', 'beds24-availability-calendar' ),
+				'label'       => esc_html__( 'Property ID', 'availability-calendar-for-beds24' ),
 				'type'        => \Elementor\Controls_Manager::TEXT,
 				'input_type'  => 'number',
-				'placeholder' => esc_html__( 'e.g. 67890', 'beds24-availability-calendar' ),
-				'description' => esc_html__( 'Beds24 property ID for a whole-property calendar.', 'beds24-availability-calendar' ),
+				'placeholder' => esc_html__( 'e.g. 67890', 'availability-calendar-for-beds24' ),
+				'description' => esc_html__( 'Beds24 property ID for a whole-property calendar.', 'availability-calendar-for-beds24' ),
 			)
 		);
 
@@ -118,7 +118,7 @@ class Avail_Calendar_Widget extends \Elementor\Widget_Base {
 		$this->start_controls_section(
 			'section_display',
 			array(
-				'label' => esc_html__( 'Display', 'beds24-availability-calendar' ),
+				'label' => esc_html__( 'Display', 'availability-calendar-for-beds24' ),
 				'tab'   => \Elementor\Controls_Manager::TAB_CONTENT,
 			)
 		);
@@ -126,7 +126,7 @@ class Avail_Calendar_Widget extends \Elementor\Widget_Base {
 		$this->add_responsive_control(
 			'nummonths',
 			array(
-				'label'          => esc_html__( 'Months to Display', 'beds24-availability-calendar' ),
+				'label'          => esc_html__( 'Months to Display', 'availability-calendar-for-beds24' ),
 				'type'           => \Elementor\Controls_Manager::SLIDER,
 				'size_units'     => array(),
 				'range'          => array(
@@ -154,23 +154,23 @@ class Avail_Calendar_Widget extends \Elementor\Widget_Base {
 		$this->add_control(
 			'startmonth',
 			array(
-				'label'   => esc_html__( 'Start Month', 'beds24-availability-calendar' ),
+				'label'   => esc_html__( 'Start Month', 'availability-calendar-for-beds24' ),
 				'type'    => \Elementor\Controls_Manager::SELECT,
 				'default' => '0',
 				'options' => array(
-					'0'  => esc_html__( 'Current month', 'beds24-availability-calendar' ),
-					'1'  => esc_html__( 'January', 'beds24-availability-calendar' ),
-					'2'  => esc_html__( 'February', 'beds24-availability-calendar' ),
-					'3'  => esc_html__( 'March', 'beds24-availability-calendar' ),
-					'4'  => esc_html__( 'April', 'beds24-availability-calendar' ),
-					'5'  => esc_html__( 'May', 'beds24-availability-calendar' ),
-					'6'  => esc_html__( 'June', 'beds24-availability-calendar' ),
-					'7'  => esc_html__( 'July', 'beds24-availability-calendar' ),
-					'8'  => esc_html__( 'August', 'beds24-availability-calendar' ),
-					'9'  => esc_html__( 'September', 'beds24-availability-calendar' ),
-					'10' => esc_html__( 'October', 'beds24-availability-calendar' ),
-					'11' => esc_html__( 'November', 'beds24-availability-calendar' ),
-					'12' => esc_html__( 'December', 'beds24-availability-calendar' ),
+					'0'  => esc_html__( 'Current month', 'availability-calendar-for-beds24' ),
+					'1'  => esc_html__( 'January', 'availability-calendar-for-beds24' ),
+					'2'  => esc_html__( 'February', 'availability-calendar-for-beds24' ),
+					'3'  => esc_html__( 'March', 'availability-calendar-for-beds24' ),
+					'4'  => esc_html__( 'April', 'availability-calendar-for-beds24' ),
+					'5'  => esc_html__( 'May', 'availability-calendar-for-beds24' ),
+					'6'  => esc_html__( 'June', 'availability-calendar-for-beds24' ),
+					'7'  => esc_html__( 'July', 'availability-calendar-for-beds24' ),
+					'8'  => esc_html__( 'August', 'availability-calendar-for-beds24' ),
+					'9'  => esc_html__( 'September', 'availability-calendar-for-beds24' ),
+					'10' => esc_html__( 'October', 'availability-calendar-for-beds24' ),
+					'11' => esc_html__( 'November', 'availability-calendar-for-beds24' ),
+					'12' => esc_html__( 'December', 'availability-calendar-for-beds24' ),
 				),
 			)
 		);
@@ -178,10 +178,10 @@ class Avail_Calendar_Widget extends \Elementor\Widget_Base {
 		$this->add_control(
 			'startyear',
 			array(
-				'label'       => esc_html__( 'Start Year', 'beds24-availability-calendar' ),
+				'label'       => esc_html__( 'Start Year', 'availability-calendar-for-beds24' ),
 				'type'        => \Elementor\Controls_Manager::TEXT,
 				'input_type'  => 'number',
-				'placeholder' => esc_html__( 'Leave empty for current year', 'beds24-availability-calendar' ),
+				'placeholder' => esc_html__( 'Leave empty for current year', 'availability-calendar-for-beds24' ),
 			)
 		);
 
@@ -191,7 +191,7 @@ class Avail_Calendar_Widget extends \Elementor\Widget_Base {
 		$this->start_controls_section(
 			'section_language',
 			array(
-				'label' => esc_html__( 'Language', 'beds24-availability-calendar' ),
+				'label' => esc_html__( 'Language', 'availability-calendar-for-beds24' ),
 				'tab'   => \Elementor\Controls_Manager::TAB_CONTENT,
 			)
 		);
@@ -201,17 +201,17 @@ class Avail_Calendar_Widget extends \Elementor\Widget_Base {
 			array(
 				'type'        => \Elementor\Controls_Manager::NOTICE,
 				'notice_type' => 'info',
-				'content'     => esc_html__( 'Leave blank to use the language detected from TranslatePress (or WordPress locale if TranslatePress is not active).', 'beds24-availability-calendar' ),
+				'content'     => esc_html__( 'Leave blank to use the language detected from TranslatePress (or WordPress locale if TranslatePress is not active).', 'availability-calendar-for-beds24' ),
 			)
 		);
 
 		$this->add_control(
 			'lang',
 			array(
-				'label'       => esc_html__( 'Language Override', 'beds24-availability-calendar' ),
+				'label'       => esc_html__( 'Language Override', 'availability-calendar-for-beds24' ),
 				'type'        => \Elementor\Controls_Manager::TEXT,
-				'placeholder' => esc_html__( 'e.g. fr, de, en, it', 'beds24-availability-calendar' ),
-				'description' => esc_html__( 'Any BCP-47 language tag. Leave blank for automatic detection.', 'beds24-availability-calendar' ),
+				'placeholder' => esc_html__( 'e.g. fr, de, en, it', 'availability-calendar-for-beds24' ),
+				'description' => esc_html__( 'Any BCP-47 language tag. Leave blank for automatic detection.', 'availability-calendar-for-beds24' ),
 			)
 		);
 
@@ -293,8 +293,8 @@ class Avail_Calendar_Widget extends \Elementor\Widget_Base {
 			$script = "(function(){
   var cfg = {$json};
   function tryInit() {
-    if ( typeof Beds24Calendar !== 'undefined' ) {
-      new Beds24Calendar( cfg );
+    if ( typeof AvailCalendar !== 'undefined' ) {
+      new AvailCalendar( cfg );
     } else {
       setTimeout( tryInit, 50 );
     }

@@ -30,7 +30,7 @@ jobs:
       - name: Build zip
         run: |
           # Create a clean temp directory with the plugin folder name
-          mkdir -p /tmp/build/beds24-availability-calendar
+          mkdir -p /tmp/build/availability-calendar-for-beds24
 
           # Copy only distributable files — exclude all dev/tooling files
           rsync -av \
@@ -45,29 +45,29 @@ jobs:
             --exclude='phpstan.neon' \
             --exclude='vendor' \
             --exclude='*.zip' \
-            . /tmp/build/beds24-availability-calendar/
+            . /tmp/build/availability-calendar-for-beds24/
 
           # Install runtime dependencies only (ships PUC in vendor/, no dev tools)
           composer install --no-dev --prefer-dist --no-progress --no-interaction \
-            --working-dir=/tmp/build/beds24-availability-calendar
+            --working-dir=/tmp/build/availability-calendar-for-beds24
 
           # Remove composer manifests — not needed at runtime
-          rm /tmp/build/beds24-availability-calendar/composer.json
-          rm /tmp/build/beds24-availability-calendar/composer.lock
+          rm /tmp/build/availability-calendar-for-beds24/composer.json
+          rm /tmp/build/availability-calendar-for-beds24/composer.lock
 
           # Inject the tag version — no manual version bump needed on each release
           VERSION="${{ steps.version.outputs.VERSION }}"
           sed -i "s/^\( \* Version: *\).*/\1${VERSION}/" \
-            /tmp/build/beds24-availability-calendar/beds24-availability-calendar.php
+            /tmp/build/availability-calendar-for-beds24/availability-calendar-for-beds24.php
           sed -i "s/define( 'BAC_VERSION', '[^']*' );/define( 'BAC_VERSION', '${VERSION}' );/" \
-            /tmp/build/beds24-availability-calendar/beds24-availability-calendar.php
+            /tmp/build/availability-calendar-for-beds24/availability-calendar-for-beds24.php
           sed -i "s/^Stable tag:.*/Stable tag:         ${VERSION}/" \
-            /tmp/build/beds24-availability-calendar/readme.txt
+            /tmp/build/availability-calendar-for-beds24/readme.txt
 
           # Create the zip from the temp directory
           cd /tmp/build
-          zip -r beds24-availability-calendar-${{ steps.version.outputs.VERSION }}.zip \
-            beds24-availability-calendar/
+          zip -r availability-calendar-for-beds24-${{ steps.version.outputs.VERSION }}.zip \
+            availability-calendar-for-beds24/
 
       - name: Generate release notes from readme.txt
         run: |
@@ -89,6 +89,6 @@ jobs:
         with:
           name: "Release v${{ steps.version.outputs.VERSION }}"
           body_path: /tmp/release-notes.md
-          files: /tmp/build/beds24-availability-calendar-${{ steps.version.outputs.VERSION }}.zip
+          files: /tmp/build/availability-calendar-for-beds24-${{ steps.version.outputs.VERSION }}.zip
           draft: false
           prerelease: false

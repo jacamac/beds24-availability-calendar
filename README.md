@@ -1,4 +1,4 @@
-# Beds24 Availability Calendar
+# Availability Calendar for Beds24
 
 A lightweight WordPress plugin that displays a Beds24 room or property availability calendar via the `[avail_calendar]` shortcode.
 
@@ -13,7 +13,7 @@ No jQuery. No build step. No external dependencies beyond the Beds24 availabilit
 - **Click-to-book** — available dates link directly to `beds24.com/booking.php` with the correct date, room, and language
 - **SessionStorage cache** — 5-minute TTL per room/property, avoids repeated API calls during navigation
 - **Dark mode** — respects `prefers-color-scheme`
-- **Multiple instances** — each shortcode creates an independent `Beds24Calendar` class instance; safe to use several times on the same page
+- **Multiple instances** — each shortcode creates an independent `AvailCalendar` class instance; safe to use several times on the same page
 
 ## Example of Display
 
@@ -24,7 +24,7 @@ No jQuery. No build step. No external dependencies beyond the Beds24 availabilit
 ## Installation
 
 1. Download or clone this repository
-2. Copy the `beds24-availability-calendar` folder to your WordPress installation's `/wp-content/plugins/` directory
+2. Copy the `availability-calendar-for-beds24` folder to your WordPress installation's `/wp-content/plugins/` directory
 3. Activate the plugin via **Plugins → Installed Plugins** in WordPress admin
 
 ---
@@ -52,24 +52,24 @@ No jQuery. No build step. No external dependencies beyond the Beds24 availabilit
 ## Architecture
 
 ```
-beds24-availability-calendar/
-├── beds24-availability-calendar.php   ← Plugin entry point, shortcode, footer init
+availability-calendar-for-beds24/
+├── availability-calendar-for-beds24.php   ← Plugin entry point, shortcode, footer init
 ├── assets/
-│   ├── calendar.css                   ← Scoped styles (.bac-wrapper)
-│   └── calendar.js                    ← Beds24Calendar class
-└── readme.txt                         ← WordPress plugin readme
+│   ├── calendar.css                       ← Scoped styles (.bac-wrapper)
+│   └── calendar.js                        ← AvailCalendar class
+└── readme.txt                             ← WordPress plugin readme
 ```
 
 ### How it works
 
 1. Each `[avail_calendar]` shortcode renders a `<div id="bac-{unique}">` container and registers its config.
-2. A single `<script>` block at `wp_footer` instantiates all `Beds24Calendar` instances collected during page render.
+2. A single `<script>` block at `wp_footer` instantiates all `AvailCalendar` instances collected during page render.
 3. Each instance fetches availability from `media.xmlcal.com`, caches it in `sessionStorage`, and renders the calendar into its own container.
 4. CSS and JS are each enqueued once per page regardless of how many shortcodes appear.
 
 ### JavaScript class
 
-The `Beds24Calendar` class can also be used outside WordPress:
+The `AvailCalendar` class can also be used outside WordPress:
 
 ```html
 <link rel="stylesheet" href="assets/calendar.css">
@@ -77,7 +77,7 @@ The `Beds24Calendar` class can also be used outside WordPress:
 
 <div id="my-calendar"></div>
 <script>
-  new Beds24Calendar({
+  new AvailCalendar({
     containerId: 'my-calendar',
     roomid:      12345,
     numMonths:   5,

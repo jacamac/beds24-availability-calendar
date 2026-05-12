@@ -9,10 +9,10 @@ A zero-dependency WordPress plugin that displays a Beds24 room/property availabi
 ## File layout
 
 ```
-beds24-availability-calendar.php  ← Plugin entry point: shortcode handler + wp_footer init
-calendar.js                       ← Beds24Calendar vanilla-JS class (also usable standalone)
-calendar.css                      ← Scoped styles (.bac-wrapper namespace)
-readme.txt                        ← WordPress.org plugin readme
+availability-calendar-for-beds24.php  ← Plugin entry point: shortcode handler + wp_footer init
+calendar.js                           ← AvailCalendar vanilla-JS class (also usable standalone)
+calendar.css                          ← Scoped styles (.bac-wrapper namespace)
+readme.txt                            ← WordPress.org plugin readme
 ```
 
 > **Note:** The PHP plugin file enqueues assets from `assets/calendar.css` / `assets/calendar.js` (relative to the plugin root). When deploying to WordPress, `calendar.js` and `calendar.css` must live in an `assets/` subdirectory inside the plugin folder.
@@ -26,7 +26,7 @@ No automated test suite. Test manually in two ways:
 <link rel="stylesheet" href="calendar.css">
 <script src="calendar.js"></script>
 <div id="test"></div>
-<script>new Beds24Calendar({ containerId: 'test' });</script>
+<script>new AvailCalendar({ containerId: 'test' });</script>
 ```
 Omitting `roomid`/`propid` triggers demo mode with randomised data.
 
@@ -36,10 +36,10 @@ Omitting `roomid`/`propid` triggers demo mode with randomised data.
 
 ### WordPress flow
 1. `[avail_calendar]` shortcode runs `bac_shortcode()`, which renders a `<div id="bac-{uid}">` and appends config to the `$bac_instances` global.
-2. `bac_footer_init()` (hooked at `wp_footer` priority 20) emits a single `<script>` that instantiates `new Beds24Calendar(cfg)` for every collected instance.
+2. `bac_footer_init()` (hooked at `wp_footer` priority 20) emits a single `<script>` that instantiates `new AvailCalendar(cfg)` for every collected instance.
 3. CSS and JS are registered once via `bac_register_assets` / `wp_enqueue_scripts`; calling `wp_enqueue_style/script` inside the shortcode is idempotent.
 
-### JavaScript class (`Beds24Calendar`)
+### JavaScript class (`AvailCalendar`)
 - **Constructor** → `_buildDOM()` → `_render()` → `_fetchAvailability()` → `_render()` again once data arrives.
 - **Data source:** `https://media.xmlcal.com/widget/1.00/scripts/availability.php?roomid=X` returns a JSON object keyed by ISO date (`"YYYY-MM-DD": 0|1`). Absent keys mean available.
 - **Cache:** `sessionStorage` with a 5-minute TTL keyed as `beds24_avail_roomid_{id}` or `beds24_avail_propid_{id}`. Also refreshes on a 5-minute `setInterval`.

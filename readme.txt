@@ -1,10 +1,10 @@
-=== Beds24 Availability Calendar ===
+=== Availability Calendar for Beds24 ===
 Contributors:       jacquesleisy
 Tags:               beds24, availability, calendar, booking, hotel, b&b
 Requires at least:  5.9
 Tested up to:       6.9
 Requires PHP:       7.4
-Stable tag:         1.2.2
+Stable tag:         1.3.0
 License:            GPLv2 or later
 License URI:        https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -26,7 +26,7 @@ Features:
 
 == Installation ==
 
-1. Upload the `beds24-availability-calendar` folder to `/wp-content/plugins/`
+1. Upload the `availability-calendar-for-beds24` folder to `/wp-content/plugins/`
 2. Activate the plugin through the **Plugins** menu in WordPress
 3. Add the shortcode to any page or post
 
@@ -60,6 +60,11 @@ Display a calendar for a whole property:
   availability data for 5 minutes and is cleared when the browser tab is closed.
 
 == Changelog ==
+
+= 1.3.0 =
+* Rename: plugin is now "Availability Calendar for Beds24" — new slug availability-calendar-for-beds24, new main file availability-calendar-for-beds24.php
+* Rename: JavaScript class renamed from Beds24Calendar to AvailCalendar
+* Note: shortcode [avail_calendar], Elementor widget slug, and CSS classes (.bac-*) are unchanged for backward compatibility
 
 = 1.2.2 =
 * Fix: Elementor responsive months-per-device regression introduced in 1.2.1 — desktop nummonths slider now reads from raw settings (get_settings()) to prevent Elementor's server-side responsive cascade from overwriting the desktop value
@@ -100,6 +105,9 @@ Display a calendar for a whole property:
 * Initial release
 
 == Upgrade Notice ==
+
+= 1.3.0 =
+Plugin renamed to "Availability Calendar for Beds24". After updating, you will need to reactivate the plugin manually — the plugin file has been renamed.
 
 = 1.2.2 =
 Fixes a regression in 1.2.1 where the desktop months-per-device count could be overridden by Elementor's server-side responsive cascade.

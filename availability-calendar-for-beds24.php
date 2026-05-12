@@ -1,7 +1,7 @@
 <?php
 /**
- * Plugin Name:       Beds24 Availability Calendar
- * Plugin URI:        https://github.com/jacamac/beds24-availability-calendar
+ * Plugin Name:       Availability Calendar for Beds24
+ * Plugin URI:        https://github.com/jacamac/availability-calendar-for-beds24
  * Description:       Displays a Beds24 room or property availability calendar via the [avail_calendar] shortcode and an Elementor widget.
  * Version:           1.1.2
  * Requires at least: 5.9
@@ -10,12 +10,12 @@
  * Author URI:        https://github.com/jacamac
  * License:           GPL-2.0-or-later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
- * Text Domain:       beds24-availability-calendar
- * GitHub Plugin URI: jacamac/beds24-availability-calendar
+ * Text Domain:       availability-calendar-for-beds24
+ * GitHub Plugin URI: jacamac/availability-calendar-for-beds24
  * GitHub Branch:     main
  * Primary Branch:    main
  *
- * @package Beds24_Availability_Calendar
+ * @package Availability_Calendar_For_Beds24
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -54,9 +54,9 @@ $bac_puc = BAC_PLUGIN_DIR . 'vendor/yahnis-elsts/plugin-update-checker/plugin-up
 if ( file_exists( $bac_puc ) ) {
 	require_once $bac_puc;
 	$bac_checker = YahnisElsts\PluginUpdateChecker\v5\PucFactory::buildUpdateChecker(
-		'https://github.com/jacamac/beds24-availability-calendar/',
+		'https://github.com/jacamac/availability-calendar-for-beds24/',
 		__FILE__,
-		'beds24-availability-calendar'
+		'availability-calendar-for-beds24'
 	);
 	if ( defined( 'BAC_UPDATE_BRANCH' ) && BAC_UPDATE_BRANCH ) {
 		$bac_checker->setBranch( BAC_UPDATE_BRANCH );
@@ -70,7 +70,7 @@ if ( file_exists( $bac_puc ) ) {
 	// version (.../releases/download/v1.2.1/... or .../zipball/v1.2.1).
 	// Re-derive the version from that URL so the comparison is correct.
 	add_filter(
-		'puc_request_info_result-beds24-availability-calendar',
+		'puc_request_info_result-availability-calendar-for-beds24',
 		function ( $info ) {
 			if ( $info !== null && ! empty( $info->download_url ) ) {
 				if ( preg_match( '~(?:releases/download|zipball)/v?([\d.]+)~', $info->download_url, $m ) ) {
@@ -233,7 +233,7 @@ $bac_instances = array();
  * Register a calendar instance and ensure assets are enqueued.
  * Returns the container div HTML.
  *
- * @param array<string, mixed> $config  Validated config array for Beds24Calendar JS class.
+ * @param array<string, mixed> $config  Validated config array for AvailCalendar JS class.
  * @return string Container div HTML.
  */
 function bac_register_instance( array $config ): string {
@@ -249,7 +249,7 @@ function bac_register_instance( array $config ): string {
 	return sprintf(
 		'<div id="%s" class="bac-wrapper" aria-label="%s"></div>',
 		esc_attr( $instance_id ),
-		esc_attr__( 'Availability calendar', 'beds24-availability-calendar' )
+		esc_attr__( 'Availability calendar', 'availability-calendar-for-beds24' )
 	);
 }
 
@@ -266,7 +266,7 @@ function bac_register_instance( array $config ): string {
  *
  * @param array<string, mixed> $raw  Associative array with keys:
  *                                   roomid, propid, nummonths, startmonth, startyear, lang.
- * @return array<string, mixed> Clean config array for Beds24Calendar JS class.
+ * @return array<string, mixed> Clean config array for AvailCalendar JS class.
  */
 function bac_sanitize_config( array $raw ): array {
 	$config = array();
@@ -383,7 +383,7 @@ function bac_footer_init(): void {
 	// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- see rationale above
 	echo "\n<script>\n";
 	// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- wp_json_encode output is safe
-	echo "(function(){\n  var instances = {$json};\n  instances.forEach(function(cfg){\n    if(typeof Beds24Calendar !== 'undefined'){\n      new Beds24Calendar(cfg);\n    }\n  });\n})();\n";
+	echo "(function(){\n  var instances = {$json};\n  instances.forEach(function(cfg){\n    if(typeof AvailCalendar !== 'undefined'){\n      new AvailCalendar(cfg);\n    }\n  });\n})();\n";
 	// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static string literal
 	echo "</script>\n";
 }

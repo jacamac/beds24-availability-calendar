@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
-<ruleset name="Beds24 Availability Calendar">
-    <description>WordPress coding standards for the Beds24 Availability Calendar plugin.</description>
+<ruleset name="Availability Calendar for Beds24">
+    <description>WordPress coding standards for the Availability Calendar for Beds24 plugin.</description>
 
     <!-- Scan these files/directories -->
-    <file>beds24-availability-calendar.php</file>
+    <file>availability-calendar-for-beds24.php</file>
     <file>widgets/</file>
 
     <!-- Exclude generated/vendor code -->
@@ -27,7 +27,7 @@
     <rule ref="WordPress.WP.I18n">
         <properties>
             <property name="text_domain" type="array">
-                <element value="beds24-availability-calendar"/>
+                <element value="availability-calendar-for-beds24"/>
             </property>
         </properties>
     </rule>

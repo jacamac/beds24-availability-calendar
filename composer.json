@@ -1,6 +1,6 @@
 {
-    "name": "jacamac/beds24-availability-calendar",
-    "description": "Beds24 Availability Calendar WordPress plugin",
+    "name": "jacamac/availability-calendar-for-beds24",
+    "description": "Availability Calendar for Beds24 WordPress plugin",
     "type": "wordpress-plugin",
     "license": "GPL-2.0-or-later",
     "authors": [

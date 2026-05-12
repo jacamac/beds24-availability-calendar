@@ -1,5 +1,5 @@
 /**
- * Beds24 Availability Calendar — calendar.js
+ * Availability Calendar for Beds24 — calendar.js
  *
  * Copyright (C) 2026 Jacques Leisy
  * License: GPLv2 or later
@@ -18,7 +18,7 @@
  * along with this plugin. If not, see <https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt>.
  *
  * Usage (emitted by WordPress shortcode handler):
- *   new Beds24Calendar({
+ *   new AvailCalendar({
  *     containerId: 'bac-1',
  *     roomid:      12345,    // OR propid, not both
  *     numMonths:   5,
@@ -28,8 +28,8 @@
  *   });
  */
 
-/* exported Beds24Calendar */
-class Beds24Calendar {
+/* exported AvailCalendar */
+class AvailCalendar {
 
     /* ─── Constructor ─────────────────────────────────────── */
     constructor(config) {
@@ -48,7 +48,7 @@ class Beds24Calendar {
 
         this.container = document.getElementById(this.cfg.containerId);
         if (!this.container) {
-            console.error('Beds24Calendar: container not found —', this.cfg.containerId);
+            console.error('AvailCalendar: container not found —', this.cfg.containerId);
             return;
         }
 
@@ -328,7 +328,7 @@ class Beds24Calendar {
             this._setStatus('');
         } catch(e) {
             this._setStatus('\u26a0 Could not load availability data');
-            console.error('Beds24Calendar fetch error:', e);
+            console.error('AvailCalendar fetch error:', e);
         }
     }
 
