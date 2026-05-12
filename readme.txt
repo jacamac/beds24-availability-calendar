@@ -2,9 +2,9 @@
 Contributors:       jacquesleisy
 Tags:               beds24, availability, calendar, booking, hotel, b&b
 Requires at least:  5.9
-Tested up to:       6.7
+Tested up to:       6.9
 Requires PHP:       7.4
-Stable tag:         1.1.5
+Stable tag:         1.1.6
 License:            GPLv2 or later
 License URI:        https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -61,6 +61,9 @@ Display a calendar for a whole property:
 
 == Changelog ==
 
+= 1.1.6 =
+* Tested and confirmed compatible with WordPress 6.9
+
 = 1.1.5 =
 * Add Plugin Update Checker (YahnisElsts/plugin-update-checker v5) — WordPress admin now shows update notifications and release notes when a new version is published on GitHub
 * To track a development branch instead of tagged releases, define BAC_UPDATE_BRANCH in wp-config.php
@@ -86,6 +89,9 @@ Display a calendar for a whole property:
 * Initial release
 
 == Upgrade Notice ==
+
+= 1.1.6 =
+Confirms compatibility with WordPress 6.9 — clears the "not tested" admin warning.
 
 = 1.1.5 =
 Adds automatic update notifications in the WordPress admin — no manual zip download needed for future releases.
