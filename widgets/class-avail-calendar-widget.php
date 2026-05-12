@@ -254,7 +254,7 @@ class Avail_Calendar_Widget extends \Elementor\Widget_Base {
 		$raw = array(
 			'roomid'          => $s_display['roomid'] ?? '',
 			'propid'          => $s_display['propid'] ?? '',
-			'nummonths'       => $this->slider_size( $s_display['nummonths'] ?? array(), 3 ),
+			'nummonths'       => $this->slider_size( $s_raw['nummonths'] ?? array(), 3 ),
 			'nummonthstablet' => $this->slider_size( $s_raw['nummonths_tablet'] ?? array(), 0 ),
 			'nummonthsmobile' => $this->slider_size( $s_raw['nummonths_mobile'] ?? array(), 0 ),
 			'startmonth'      => $s_display['startmonth'] ?? '',

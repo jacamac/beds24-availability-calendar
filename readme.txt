@@ -4,7 +4,7 @@ Tags:               beds24, availability, calendar, booking, hotel, b&b
 Requires at least:  5.9
 Tested up to:       6.9
 Requires PHP:       7.4
-Stable tag:         1.2.0
+Stable tag:         1.2.2
 License:            GPLv2 or later
 License URI:        https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -61,6 +61,9 @@ Display a calendar for a whole property:
 
 == Changelog ==
 
+= 1.2.2 =
+* Fix: Elementor responsive months-per-device regression introduced in 1.2.1 — desktop nummonths slider now reads from raw settings (get_settings()) to prevent Elementor's server-side responsive cascade from overwriting the desktop value
+
 = 1.2.1 =
 * Fix: Elementor widget now resolves ACF dynamic tag values (e.g. roomid/propid) correctly — switching from get_settings() back to get_settings_for_display() for text controls while preserving raw breakpoint slider values via get_settings()
 * Fix: Plugin Update Checker now correctly detects available versions — version is derived from the GitHub release download URL rather than the static placeholder in the repo source file
@@ -97,6 +100,9 @@ Display a calendar for a whole property:
 * Initial release
 
 == Upgrade Notice ==
+
+= 1.2.2 =
+Fixes a regression in 1.2.1 where the desktop months-per-device count could be overridden by Elementor's server-side responsive cascade.
 
 = 1.2.0 =
 Fixes responsive month counts in the Elementor widget — desktop, tablet, and mobile values now work as configured.
