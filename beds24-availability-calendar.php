@@ -266,14 +266,12 @@ function bac_sanitize_config( array $raw ): array {
 	$nummonths           = max( 1, min( 12, $raw_months ? $raw_months : 3 ) );
 	$config['numMonths'] = $nummonths;
 
-	$tablet_months = absint( $raw['nummonthstablet'] ?? 0 );
-	if ( $tablet_months >= 1 ) {
-		$config['numMonthsTablet'] = min( 12, $tablet_months );
-	}
-	$mobile_months = absint( $raw['nummonthsmobile'] ?? 0 );
-	if ( $mobile_months >= 1 ) {
-		$config['numMonthsMobile'] = min( 12, $mobile_months );
-	}
+	// Always include tablet/mobile counts so the JS resize listener is always
+	// wired up. Fall back to the desktop value when not explicitly set.
+	$tablet_months             = absint( $raw['nummonthstablet'] ?? 0 );
+	$config['numMonthsTablet'] = $tablet_months >= 1 ? min( 12, $tablet_months ) : $nummonths;
+	$mobile_months             = absint( $raw['nummonthsmobile'] ?? 0 );
+	$config['numMonthsMobile'] = $mobile_months >= 1 ? min( 12, $mobile_months ) : $nummonths;
 
 	$startmonth = absint( $raw['startmonth'] ?? 0 );
 	if ( $startmonth >= 1 && $startmonth <= 12 ) {

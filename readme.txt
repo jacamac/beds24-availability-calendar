@@ -4,7 +4,7 @@ Tags:               beds24, availability, calendar, booking, hotel, b&b
 Requires at least:  5.9
 Tested up to:       6.9
 Requires PHP:       7.4
-Stable tag:         1.1.6
+Stable tag:         1.2.0
 License:            GPLv2 or later
 License URI:        https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -61,6 +61,10 @@ Display a calendar for a whole property:
 
 == Changelog ==
 
+= 1.2.0 =
+* Fix: Elementor responsive months-per-device setting now correctly controls desktop, tablet, and mobile display counts
+* Fix: viewport resize listener is now always wired up so switching device sizes re-renders the calendar without a page reload
+
 = 1.1.6 =
 * Tested and confirmed compatible with WordPress 6.9
 
@@ -89,6 +93,9 @@ Display a calendar for a whole property:
 * Initial release
 
 == Upgrade Notice ==
+
+= 1.2.0 =
+Fixes responsive month counts in the Elementor widget — desktop, tablet, and mobile values now work as configured.
 
 = 1.1.6 =
 Confirms compatibility with WordPress 6.9 — clears the "not tested" admin warning.

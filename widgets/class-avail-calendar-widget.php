@@ -221,18 +221,40 @@ class Avail_Calendar_Widget extends \Elementor\Widget_Base {
 	// ─── Render (front-end + Elementor preview) ────────────
 
 	/**
+	 * Extract an integer size from a slider setting value.
+	 * Elementor stores slider values as ['unit' => 'px', 'size' => n] but
+	 * some contexts return a plain scalar, so handle both formats.
+	 *
+	 * @param mixed $val      Raw setting value (array or scalar).
+	 * @param int   $fallback Value to return when the setting is absent or empty.
+	 * @return int
+	 */
+	private function slider_size( $val, int $fallback ): int {
+		if ( is_array( $val ) && isset( $val['size'] ) && '' !== $val['size'] ) {
+			return (int) $val['size'];
+		}
+		if ( is_numeric( $val ) ) {
+			return (int) $val;
+		}
+		return $fallback;
+	}
+
+	/**
 	 * Render the widget output on the frontend.
 	 */
 	protected function render(): void {
-		$s = $this->get_settings_for_display();
+		// Use get_settings() (raw DB values) so that breakpoint-specific keys
+		// (nummonths_tablet, nummonths_mobile) are always present. The
+		// get_settings_for_display() cascade can resolve them away server-side.
+		$s = $this->get_settings();
 
 		// Build raw values from widget settings.
 		$raw = array(
 			'roomid'          => $s['roomid'] ?? '',
 			'propid'          => $s['propid'] ?? '',
-			'nummonths'       => (int) ( $s['nummonths']['size'] ?? 3 ),
-			'nummonthstablet' => (int) ( $s['nummonths_tablet']['size'] ?? 0 ),
-			'nummonthsmobile' => (int) ( $s['nummonths_mobile']['size'] ?? 0 ),
+			'nummonths'       => $this->slider_size( $s['nummonths'] ?? array(), 3 ),
+			'nummonthstablet' => $this->slider_size( $s['nummonths_tablet'] ?? array(), 0 ),
+			'nummonthsmobile' => $this->slider_size( $s['nummonths_mobile'] ?? array(), 0 ),
 			'startmonth'      => $s['startmonth'] ?? '',
 			'startyear'       => $s['startyear'] ?? '',
 			'lang'            => $s['lang'] ?? '',
