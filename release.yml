@@ -1,0 +1,50 @@
+name: Release
+
+# Triggers when you push a version tag: git tag v1.0.1 && git push --tags
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Get version from tag
+        id: version
+        run: echo "VERSION=${GITHUB_REF_NAME#v}" >> $GITHUB_OUTPUT
+
+      - name: Build zip
+        run: |
+          # Create a clean temp directory with the plugin folder name
+          mkdir -p /tmp/build/beds24-availability-calendar
+
+          # Copy only the files that belong in the plugin (exclude dev files)
+          rsync -av \
+            --exclude='.git' \
+            --exclude='.github' \
+            --exclude='.gitignore' \
+            --exclude='*.zip' \
+            . /tmp/build/beds24-availability-calendar/
+
+          # Create the zip from the temp directory
+          cd /tmp/build
+          zip -r beds24-availability-calendar-${{ steps.version.outputs.VERSION }}.zip \
+            beds24-availability-calendar/
+
+      - name: Create GitHub Release and upload zip
+        uses: softprops/action-gh-release@v2
+        with:
+          name: "Release v${{ steps.version.outputs.VERSION }}"
+          body: |
+            ## Installation
+            Download the zip below and install via **WordPress Admin → Plugins → Add New → Upload Plugin**.
+            
+            Or if you use [Git Updater](https://git-updater.com/), this release will be detected automatically.
+          files: /tmp/build/beds24-availability-calendar-${{ steps.version.outputs.VERSION }}.zip
+          draft: false
+          prerelease: false

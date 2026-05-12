@@ -1,0 +1,27 @@
+parameters:
+    # Level 6: checks types, dead code, impossible conditions.
+    # Raise to 8 or 'max' once all level-6 issues are resolved.
+    level: 6
+
+    paths:
+        - beds24-availability-calendar.php
+        - widgets/
+
+    excludePaths:
+        - vendor/
+
+    # WordPress + plugin stubs so PHPStan understands WP functions
+    # (wp_json_encode, esc_attr, absint, etc.) without needing a full WP install.
+    bootstrapFiles:
+        - vendor/php-stubs/wordpress-globals/wordpress-globals.php
+
+includes:
+    - vendor/szepeviktor/phpstan-wordpress/extension.neon
+
+    # Tell PHPStan about WordPress global functions and classes
+    - vendor/phpstan/phpstan/conf/bleedingEdge.neon
+
+ignoreErrors:
+    # Elementor classes are not available in the CI environment — suppress
+    # "class not found" errors for Elementor types only.
+    - '#(\\Elementor\\)#'

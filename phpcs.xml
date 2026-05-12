@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<ruleset name="Beds24 Availability Calendar">
+    <description>WordPress coding standards for the Beds24 Availability Calendar plugin.</description>
+
+    <!-- Scan these files/directories -->
+    <file>beds24-availability-calendar.php</file>
+    <file>widgets/</file>
+
+    <!-- Exclude generated/vendor code -->
+    <exclude-pattern>vendor/</exclude-pattern>
+    <exclude-pattern>node_modules/</exclude-pattern>
+
+    <!-- Use WordPress coding standards as the base -->
+    <rule ref="WordPress">
+        <!--
+            We intentionally suppress EscapeOutput for two specific echo statements
+            that output wp_json_encode() results or pre-escaped HTML from sprintf().
+            Each suppression is documented inline with a safety rationale comment.
+            Suppressing the rule globally here would be too broad.
+        -->
+    </rule>
+
+    <!-- Minimum PHP version -->
+    <config name="testVersion" value="7.4-"/>
+
+    <!-- Text domain for i18n checks -->
+    <rule ref="WordPress.WP.I18n">
+        <properties>
+            <property name="text_domain" type="array">
+                <element value="beds24-availability-calendar"/>
+            </property>
+        </properties>
+    </rule>
+
+    <!-- Report format -->
+    <arg name="colors"/>
+    <arg value="sp"/><!-- Show source and progress -->
+</ruleset>

@@ -1,3 +1,15 @@
+# Composer dependencies — never committed, installed by CI
+vendor/
+composer.lock
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# OS
 .DS_Store
 Thumbs.db
-.claude/
+
+# Build artefacts
+*.zip
