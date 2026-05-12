@@ -23,11 +23,20 @@ jobs:
           # Create a clean temp directory with the plugin folder name
           mkdir -p /tmp/build/beds24-availability-calendar
 
-          # Copy only the files that belong in the plugin (exclude dev files)
+          # Copy only distributable files — exclude all dev/tooling files
           rsync -av \
             --exclude='.git' \
             --exclude='.github' \
             --exclude='.gitignore' \
+            --exclude='.DS_Store' \
+            --exclude='.claude' \
+            --exclude='CLAUDE.md' \
+            --exclude='README.md' \
+            --exclude='composer.json' \
+            --exclude='composer.lock' \
+            --exclude='phpcs.xml' \
+            --exclude='phpstan.neon' \
+            --exclude='vendor' \
             --exclude='*.zip' \
             . /tmp/build/beds24-availability-calendar/
 
@@ -43,7 +52,7 @@ jobs:
           body: |
             ## Installation
             Download the zip below and install via **WordPress Admin → Plugins → Add New → Upload Plugin**.
-            
+
             Or if you use [Git Updater](https://git-updater.com/), this release will be detected automatically.
           files: /tmp/build/beds24-availability-calendar-${{ steps.version.outputs.VERSION }}.zip
           draft: false
