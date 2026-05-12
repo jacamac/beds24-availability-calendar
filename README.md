@@ -15,6 +15,10 @@ No jQuery. No build step. No external dependencies beyond the Beds24 availabilit
 - **Dark mode** — respects `prefers-color-scheme`
 - **Multiple instances** — each shortcode creates an independent `Beds24Calendar` class instance; safe to use several times on the same page
 
+## Example of Display
+
+<img width="914" height="332" alt="image" src="https://github.com/user-attachments/assets/e805b885-db1a-4cfd-8cd5-09d0c0b995e7" />
+
 ---
 
 ## Installation
