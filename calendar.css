@@ -1,0 +1,232 @@
+/*
+ * Beds24 Availability Calendar — calendar.css
+ * Scoped to .bac-wrapper so styles never leak into the host theme.
+ */
+
+/* ── Reset inside wrapper ── */
+.bac-wrapper *,
+.bac-wrapper *::before,
+.bac-wrapper *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+/* ── CSS custom properties (light mode) ── */
+.bac-wrapper {
+    --cal-bg:         #ffffff;
+    --cal-text:       #1a1a1a;
+    --cal-muted:      #cccccc;
+    --cal-header:     #1a1a1a;
+    --cal-dow:        #999999;
+    --cal-nav-hover:  #f0f0f0;
+    --cal-today-ring: #1a1a1a;
+
+    --avail-bg:       #34a853;
+    --avail-text:     #ffffff;
+    --unavail-bg:     #ea4335;
+    --unavail-text:   #ffffff;
+
+    --tile-r:         7px;
+    --tile-size:      36px;
+    --tile-gap:       4px;
+    --month-gap:      28px;
+
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    background: var(--cal-bg);
+    color: var(--cal-text);
+    padding: 24px 16px;
+    max-width: 1100px;
+}
+
+/* ── Dark mode ── */
+@media (prefers-color-scheme: dark) {
+    .bac-wrapper {
+        --cal-bg:         #1c1c1e;
+        --cal-text:       #f0f0f0;
+        --cal-muted:      #444444;
+        --cal-header:     #f0f0f0;
+        --cal-dow:        #666666;
+        --cal-nav-hover:  #2c2c2e;
+        --cal-today-ring: #f0f0f0;
+    }
+}
+
+/* ── Navigation ── */
+.bac-nav {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.bac-nav button {
+    background: none;
+    border: 1px solid rgba(128, 128, 128, 0.25);
+    border-radius: 6px;
+    padding: 5px 11px;
+    cursor: pointer;
+    color: var(--cal-text);
+    font-size: 20px;
+    line-height: 1;
+    transition: background 0.15s;
+}
+
+.bac-nav button:hover {
+    background: var(--cal-nav-hover);
+}
+
+.bac-status {
+    font-size: 12px;
+    color: var(--cal-dow);
+}
+
+/* ── Month strip ── */
+.bac-strip {
+    display: flex;
+    gap: var(--month-gap);
+    overflow-x: auto;
+    padding-bottom: 8px;
+    scroll-snap-type: x mandatory;
+}
+
+.bac-strip::-webkit-scrollbar {
+    display: none;
+}
+
+/* ── Single month ── */
+.bac-month {
+    flex-shrink: 0;
+    scroll-snap-align: start;
+}
+
+.bac-month-title {
+    font-size: 15px;
+    font-weight: 600;
+    text-align: center;
+    color: var(--cal-header);
+    margin-bottom: 10px;
+    letter-spacing: -0.01em;
+}
+
+/* ── Day-of-week header + day grid ── */
+.bac-dow-row,
+.bac-grid {
+    display: grid;
+    grid-template-columns: repeat(7, var(--tile-size));
+    gap: var(--tile-gap);
+}
+
+.bac-dow-row {
+    margin-bottom: var(--tile-gap);
+}
+
+.bac-dow-cell {
+    text-align: center;
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--cal-dow);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+/* ── Day tile base ── */
+.bac-day {
+    width: var(--tile-size);
+    height: var(--tile-size);
+    border-radius: var(--tile-r);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 500;
+    position: relative;
+    overflow: hidden;
+    user-select: none;
+}
+
+/* Number sits above the ::before triangle overlay */
+.bac-day span {
+    position: relative;
+    z-index: 2;
+}
+
+.bac-day.bac-empty {
+    visibility: hidden;
+}
+
+/* PAST — rule 1: grey text, transparent background */
+.bac-day.bac-past {
+    background: transparent;
+    color: var(--cal-muted);
+}
+
+/* FULL AVAILABLE — rule 3a */
+.bac-day.bac-available {
+    background: var(--avail-bg);
+    color: var(--avail-text);
+}
+
+/* FULL UNAVAILABLE — rule 2a */
+.bac-day.bac-unavailable {
+    background: var(--unavail-bg);
+    color: var(--unavail-text);
+}
+
+/*
+ * SPLIT TILES
+ * clip-path: polygon(0 0, 100% 0, 0 100%) = top-left triangle
+ *
+ * bac-split-avail-am  (rule 2b): cur=0, prev=1
+ *   AM = available (green TL), PM = unavailable (red BR)
+ *   base = red, ::before = green triangle
+ *
+ * bac-split-avail-pm  (rule 3b): cur=1, prev=0
+ *   AM = unavailable (red TL), PM = available (green BR)
+ *   base = green, ::before = red triangle
+ */
+.bac-day.bac-split-avail-am {
+    background: var(--unavail-bg);
+    color: var(--unavail-text);
+}
+
+.bac-day.bac-split-avail-am::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--avail-bg);
+    clip-path: polygon(0 0, 100% 0, 0 100%);
+    z-index: 1;
+}
+
+.bac-day.bac-split-avail-pm {
+    background: var(--avail-bg);
+    color: var(--avail-text);
+}
+
+.bac-day.bac-split-avail-pm::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--unavail-bg);
+    clip-path: polygon(0 0, 100% 0, 0 100%);
+    z-index: 1;
+}
+
+/* Today ring */
+.bac-day.bac-today {
+    outline: 2.5px solid var(--cal-today-ring);
+    outline-offset: -2px;
+    font-weight: 700;
+}
+
+/* Bookable tile — pointer cursor + hover brightness */
+.bac-wrapper a:has(.bac-day.bac-available),
+.bac-wrapper a:has(.bac-day.bac-split-avail-pm) {
+    display: contents;
+}
+
+.bac-wrapper a .bac-day.bac-available:hover,
+.bac-wrapper a .bac-day.bac-split-avail-pm:hover {
+    filter: brightness(1.1);
+}
