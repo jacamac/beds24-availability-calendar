@@ -106,4 +106,6 @@ The `Beds24Calendar` class can also be used outside WordPress:
 
 ## License
 
-MIT © Jacques Leisy
+GPLv2 or later © Jacques Leisy
+
+This plugin is free software; you can redistribute it and/or modify it under the terms of the [GNU General Public License v2](https://www.gnu.org/licenses/gpl-2.0.html) or later.

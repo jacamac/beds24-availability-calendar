@@ -5,8 +5,8 @@ Requires at least:  5.9
 Tested up to:       6.7
 Requires PHP:       7.4
 Stable tag:         1.0.0
-License:            MIT
-License URI:        https://opensource.org/licenses/MIT
+License:            GPLv2 or later
+License URI:        https://www.gnu.org/licenses/gpl-2.0.html
 
 Displays a Beds24 room or property availability calendar via the [avail_calendar] shortcode.
 
