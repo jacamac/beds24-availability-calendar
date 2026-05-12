@@ -43,6 +43,15 @@ jobs:
             --exclude='*.zip' \
             . /tmp/build/beds24-availability-calendar/
 
+          # Inject the tag version — no manual version bump needed on each release
+          VERSION="${{ steps.version.outputs.VERSION }}"
+          sed -i "s/^\( \* Version: *\).*/\1${VERSION}/" \
+            /tmp/build/beds24-availability-calendar/beds24-availability-calendar.php
+          sed -i "s/define( 'BAC_VERSION', '[^']*' );/define( 'BAC_VERSION', '${VERSION}' );/" \
+            /tmp/build/beds24-availability-calendar/beds24-availability-calendar.php
+          sed -i "s/^Stable tag:.*/Stable tag:         ${VERSION}/" \
+            /tmp/build/beds24-availability-calendar/readme.txt
+
           # Create the zip from the temp directory
           cd /tmp/build
           zip -r beds24-availability-calendar-${{ steps.version.outputs.VERSION }}.zip \
