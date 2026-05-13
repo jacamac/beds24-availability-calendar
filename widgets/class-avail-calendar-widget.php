@@ -516,6 +516,13 @@ class Avail_Calendar_Widget extends \Elementor\Widget_Base {
 	protected function render(): void {
 		$s = $this->get_settings_for_display();
 
+		// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- temporary debug, remove once defaults confirmed
+		error_log( '[BAC debug] nummonths raw from get_settings_for_display: ' . wp_json_encode( array(
+			'nummonths'        => $s['nummonths'] ?? 'MISSING',
+			'nummonths_tablet' => $s['nummonths_tablet'] ?? 'MISSING',
+			'nummonths_mobile' => $s['nummonths_mobile'] ?? 'MISSING',
+		) ) );
+
 		// Build raw values from widget settings.
 		$raw = array(
 			'roomid'          => $s['roomid'] ?? '',
