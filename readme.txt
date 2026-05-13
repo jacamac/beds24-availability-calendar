@@ -4,7 +4,7 @@ Tags:               beds24, availability, calendar, booking, hotel, b&b
 Requires at least:  5.9
 Tested up to:       6.9
 Requires PHP:       7.4
-Stable tag:         1.5.0
+Stable tag:         1.5.2
 License:            GPLv2 or later
 License URI:        https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -60,6 +60,12 @@ Display a calendar for a whole property:
   availability data for 5 minutes and is cleared when the browser tab is closed.
 
 == Changelog ==
+
+= 1.5.2 =
+* Upgrade PHPCS ruleset from WordPress to WordPress-Extra for stricter escape, nonce, and SQL auditing
+* Add composer audit step to CI pipeline to detect known CVEs in vendored dependencies
+* Pin GitHub Actions to full commit SHAs to prevent supply-chain tag-hijacking attacks
+* Replace phpcs:ignore escape suppression in Elementor widget render() with wp_kses() and an explicit HTML allowlist
 
 = 1.5.0 =
 * Add Elementor live preview: the calendar now renders live in the editor canvas — changes to room/property ID, month count, start date, and language update instantly without saving

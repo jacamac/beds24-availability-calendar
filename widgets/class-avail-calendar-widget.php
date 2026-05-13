@@ -567,15 +567,17 @@ class Avail_Calendar_Widget extends \Elementor\Widget_Base {
 
 		$html = bac_register_instance( $config, $extra_attrs );
 
-		/*
-		 * Safety rationale for the phpcs:ignore below:
-		 * $html is the return value of bac_register_instance(), which uses
-		 * sprintf() with esc_attr() on every interpolated value. The only
-		 * dynamic content is the auto-generated instance ID (wp_unique_id)
-		 * and a translated string (esc_attr__). Both are safe to output raw.
-		 */
-		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- see rationale above
-		echo $html;
+		echo wp_kses(
+			$html,
+			array(
+				'div' => array(
+					'id'           => true,
+					'class'        => true,
+					'aria-label'   => true,
+					'data-bac-cfg' => true,
+				),
+			)
+		);
 	}
 
 	// ─── Elementor editor live-preview template ────────────
