@@ -552,16 +552,34 @@ class Avail_Calendar_Widget extends \Elementor\Widget_Base {
 
 	/**
 	 * Underscore.js template used by Elementor for the editor canvas preview.
-	 * The JS handler in assets/elementor-preview.js initialises AvailCalendar
-	 * in demo mode and re-initialises it on every settings change.
-	 * Colors update without re-initialisation via Elementor's selector CSS injection.
+	 *
+	 * All settings are serialised into a data-bac-cfg attribute so the JS handler
+	 * can read them without depending on elementorFrontend.config (which only
+	 * includes controls marked frontend_available and requires a page save to
+	 * refresh). The template re-renders on every non-CSS setting change, so the
+	 * attribute is always current.
 	 */
 	protected function content_template(): void {
 		?>
 		<#
 		var containerId = 'bac-' + view.model.id;
+		function _bacSz( v, fb ) {
+			if ( ! v ) { return fb; }
+			var n = ( 'object' === typeof v ) ? parseInt( v.size, 10 ) : parseInt( v, 10 );
+			return ( isNaN( n ) || n < 1 ) ? fb : n;
+		}
+		var bacCfg = JSON.stringify( {
+			roomid:          String( settings.roomid  || '' ).trim(),
+			propid:          String( settings.propid  || '' ).trim(),
+			numMonths:       _bacSz( settings.nummonths,        3 ),
+			numMonthsTablet: _bacSz( settings.nummonths_tablet, 2 ),
+			numMonthsMobile: _bacSz( settings.nummonths_mobile, 1 ),
+			startMonth:      parseInt( settings.startmonth, 10 ) > 0 ? parseInt( settings.startmonth, 10 ) : null,
+			startYear:       parseInt( settings.startyear,   10 ) > 0 ? parseInt( settings.startyear,   10 ) : null,
+			lang:            String( settings.lang || 'en' ),
+		} );
 		#>
-		<div id="{{ containerId }}" class="bac-wrapper"></div>
+		<div id="{{ containerId }}" class="bac-wrapper" data-bac-cfg='{{{ bacCfg }}}'></div>
 		<?php
 	}
 }
