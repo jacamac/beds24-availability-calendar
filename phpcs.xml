@@ -10,8 +10,9 @@
     <exclude-pattern>vendor/</exclude-pattern>
     <exclude-pattern>node_modules/</exclude-pattern>
 
-    <!-- Use WordPress coding standards as the base -->
-    <rule ref="WordPress">
+    <!-- WordPress-Extra adds ~40 sniffs on top of the base ruleset, specifically covering
+         escape auditing, nonce verification, and SQL preparation. -->
+    <rule ref="WordPress-Extra">
         <!--
             We intentionally suppress EscapeOutput for two specific echo statements
             that output wp_json_encode() results or pre-escaped HTML from sprintf().
