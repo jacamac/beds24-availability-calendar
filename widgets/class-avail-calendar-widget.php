@@ -506,9 +506,12 @@ class Avail_Calendar_Widget extends \Elementor\Widget_Base {
 	 * preview DOM with the server-rendered HTML whenever a setting changes.
 	 */
 	public function is_dynamic_content(): bool {
-		$settings = $this->get_settings();
-		$dynamic  = $settings['__dynamic__'] ?? array();
-		return is_array( $dynamic ) && ( ! empty( $dynamic['roomid'] ) || ! empty( $dynamic['propid'] ) );
+		// Always render server-side in the editor so dynamic tags (ACF fields,
+		// post meta, etc.) are resolved via get_settings_for_display() in PHP.
+		// NOTE: must NOT call get_settings() here — Elementor calls this method
+		// on widget types during editor script loading, before any instance is
+		// bound to a post, so get_settings() returns null and causes a fatal error.
+		return true;
 	}
 
 	// ─── Render (front-end + Elementor preview) ────────────
