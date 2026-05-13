@@ -67,7 +67,7 @@ if ( file_exists( $bac_puc ) ) {
 	add_filter(
 		'puc_request_info_result-availability-calendar-for-beds24',
 		function ( $info ) {
-			if ( $info === null ) {
+			if ( null === $info ) {
 				return $info;
 			}
 			if ( defined( 'BAC_UPDATE_BRANCH' ) && BAC_UPDATE_BRANCH ) {
@@ -81,7 +81,7 @@ if ( file_exists( $bac_puc ) ) {
 				// contains the dev placeholder. Re-derive the real version from the
 				// release download URL (.../releases/download/v1.2.3/... or .../zipball/v1.2.3).
 				if ( preg_match( '~(?:releases/download|zipball)/v?([\d.]+)~', $info->download_url, $m ) ) {
-					$info->version = $m[1];
+					$info->version = $m[1]; // @phpstan-ignore property.notFound (PUC info object has dynamic properties; $version coexists with $download_url)
 				}
 			}
 			return $info;

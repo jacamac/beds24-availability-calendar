@@ -217,9 +217,11 @@ class Avail_Calendar_Widget extends \Elementor\Widget_Base {
 
 		$this->end_controls_section();
 
-		/* ══════════════════════════════════════════════════════
-		   STYLE TAB
-		   ══════════════════════════════════════════════════════ */
+		/*
+		══════════════════════════════════════════════════════
+			STYLE TAB
+			══════════════════════════════════════════════════════
+		*/
 
 		/* ── Section: Colors ── */
 		$this->start_controls_section(
@@ -245,9 +247,9 @@ class Avail_Calendar_Widget extends \Elementor\Widget_Base {
 				'type'      => \Elementor\Controls_Manager::COLOR,
 				'default'   => '#34a853',
 				'selectors' => array(
-					'{{WRAPPER}} .bac-day.bac-available'              => 'background: {{VALUE}};',
+					'{{WRAPPER}} .bac-day.bac-available' => 'background: {{VALUE}};',
 					'{{WRAPPER}} .bac-day.bac-split-avail-am::before' => 'background: {{VALUE}};',
-					'{{WRAPPER}} .bac-day.bac-split-avail-pm'         => 'background: {{VALUE}};',
+					'{{WRAPPER}} .bac-day.bac-split-avail-pm' => 'background: {{VALUE}};',
 				),
 			)
 		);
@@ -259,8 +261,8 @@ class Avail_Calendar_Widget extends \Elementor\Widget_Base {
 				'type'      => \Elementor\Controls_Manager::COLOR,
 				'default'   => '#ea4335',
 				'selectors' => array(
-					'{{WRAPPER}} .bac-day.bac-unavailable'            => 'background: {{VALUE}};',
-					'{{WRAPPER}} .bac-day.bac-split-avail-am'         => 'background: {{VALUE}};',
+					'{{WRAPPER}} .bac-day.bac-unavailable' => 'background: {{VALUE}};',
+					'{{WRAPPER}} .bac-day.bac-split-avail-am' => 'background: {{VALUE}};',
 					'{{WRAPPER}} .bac-day.bac-split-avail-pm::before' => 'background: {{VALUE}};',
 				),
 			)
@@ -396,9 +398,16 @@ class Avail_Calendar_Widget extends \Elementor\Widget_Base {
 				'type'       => \Elementor\Controls_Manager::SLIDER,
 				'size_units' => array( 'px' ),
 				'range'      => array(
-					'px' => array( 'min' => 24, 'max' => 60, 'step' => 1 ),
+					'px' => array(
+						'min'  => 24,
+						'max'  => 60,
+						'step' => 1,
+					),
 				),
-				'default'    => array( 'unit' => 'px', 'size' => 36 ),
+				'default'    => array(
+					'unit' => 'px',
+					'size' => 36,
+				),
 				'selectors'  => array(
 					'{{WRAPPER}} .bac-day'     => 'width: {{SIZE}}{{UNIT}}; height: {{SIZE}}{{UNIT}};',
 					'{{WRAPPER}} .bac-dow-row' => 'grid-template-columns: repeat(7, {{SIZE}}{{UNIT}});',
@@ -414,9 +423,16 @@ class Avail_Calendar_Widget extends \Elementor\Widget_Base {
 				'type'       => \Elementor\Controls_Manager::SLIDER,
 				'size_units' => array( 'px' ),
 				'range'      => array(
-					'px' => array( 'min' => 0, 'max' => 50, 'step' => 1 ),
+					'px' => array(
+						'min'  => 0,
+						'max'  => 50,
+						'step' => 1,
+					),
 				),
-				'default'    => array( 'unit' => 'px', 'size' => 7 ),
+				'default'    => array(
+					'unit' => 'px',
+					'size' => 7,
+				),
 				'selectors'  => array(
 					'{{WRAPPER}} .bac-day' => 'border-radius: {{SIZE}}{{UNIT}};',
 				),
@@ -430,9 +446,16 @@ class Avail_Calendar_Widget extends \Elementor\Widget_Base {
 				'type'       => \Elementor\Controls_Manager::SLIDER,
 				'size_units' => array( 'px' ),
 				'range'      => array(
-					'px' => array( 'min' => 0, 'max' => 16, 'step' => 1 ),
+					'px' => array(
+						'min'  => 0,
+						'max'  => 16,
+						'step' => 1,
+					),
 				),
-				'default'    => array( 'unit' => 'px', 'size' => 4 ),
+				'default'    => array(
+					'unit' => 'px',
+					'size' => 4,
+				),
 				'selectors'  => array(
 					'{{WRAPPER}} .bac-dow-row' => 'gap: {{SIZE}}{{UNIT}}; margin-bottom: {{SIZE}}{{UNIT}};',
 					'{{WRAPPER}} .bac-grid'    => 'gap: {{SIZE}}{{UNIT}};',
@@ -447,9 +470,16 @@ class Avail_Calendar_Widget extends \Elementor\Widget_Base {
 				'type'       => \Elementor\Controls_Manager::SLIDER,
 				'size_units' => array( 'px' ),
 				'range'      => array(
-					'px' => array( 'min' => 0, 'max' => 80, 'step' => 4 ),
+					'px' => array(
+						'min'  => 0,
+						'max'  => 80,
+						'step' => 4,
+					),
 				),
-				'default'    => array( 'unit' => 'px', 'size' => 28 ),
+				'default'    => array(
+					'unit' => 'px',
+					'size' => 28,
+				),
 				'selectors'  => array(
 					'{{WRAPPER}} .bac-strip' => 'gap: {{SIZE}}{{UNIT}};',
 				),
@@ -485,15 +515,6 @@ class Avail_Calendar_Widget extends \Elementor\Widget_Base {
 	 */
 	protected function render(): void {
 		$s = $this->get_settings_for_display();
-
-		// DEBUG: dump raw responsive values from get_settings_for_display() to the
-		// error log so we can verify whether defaults are applied on the front-end.
-		// Remove once confirmed.
-		error_log( '[BAC debug] nummonths raw from get_settings_for_display: ' . wp_json_encode( array(
-			'nummonths'        => $s['nummonths']        ?? 'MISSING',
-			'nummonths_tablet' => $s['nummonths_tablet'] ?? 'MISSING',
-			'nummonths_mobile' => $s['nummonths_mobile'] ?? 'MISSING',
-		) ) );
 
 		// Build raw values from widget settings.
 		$raw = array(
