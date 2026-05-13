@@ -495,6 +495,22 @@ class Avail_Calendar_Widget extends \Elementor\Widget_Base {
 		$this->end_controls_section();
 	}
 
+	// ─── Dynamic content flag ────────────
+
+	/**
+	 * Tell Elementor to render this widget server-side (via AJAX) when roomid
+	 * or propid is supplied through a dynamic tag (e.g. an ACF field).
+	 *
+	 * In that case content_template() cannot resolve the dynamic value; the PHP
+	 * render() method can via get_settings_for_display(). Elementor replaces the
+	 * preview DOM with the server-rendered HTML whenever a setting changes.
+	 */
+	public function is_dynamic_content(): bool {
+		$settings = $this->get_settings();
+		$dynamic  = $settings['__dynamic__'] ?? array();
+		return is_array( $dynamic ) && ( ! empty( $dynamic['roomid'] ) || ! empty( $dynamic['propid'] ) );
+	}
+
 	// ─── Render (front-end + Elementor preview) ────────────
 
 	/**
@@ -535,7 +551,18 @@ class Avail_Calendar_Widget extends \Elementor\Widget_Base {
 		);
 
 		$config = bac_sanitize_config( $raw );
-		$html   = bac_register_instance( $config );
+
+		// In edit mode, attach the resolved config as a data attribute so the
+		// Elementor preview JS handler can initialise AvailCalendar directly —
+		// bac_footer_init() does not run during Elementor's AJAX widget render.
+		$extra_attrs = array();
+		if ( \Elementor\Plugin::$instance && \Elementor\Plugin::$instance->editor->is_edit_mode() ) {
+			$preview_cfg = $config;
+			unset( $preview_cfg['containerId'] );
+			$extra_attrs['data-bac-cfg'] = (string) wp_json_encode( $preview_cfg );
+		}
+
+		$html = bac_register_instance( $config, $extra_attrs );
 
 		/*
 		 * Safety rationale for the phpcs:ignore below:
@@ -568,12 +595,10 @@ class Avail_Calendar_Widget extends \Elementor\Widget_Base {
 			var n = ( 'object' === typeof v ) ? parseInt( v.size, 10 ) : parseInt( v, 10 );
 			return ( isNaN( n ) || n < 1 ) ? fb : n;
 		}
-		// Dynamic tags (ACF, post meta, etc.) are resolved server-side only.
-		// In the editor template they appear as empty or a raw tag shortcode.
-		// Detect via settings.__dynamic__ and return '' so the calendar falls
-		// back to demo mode instead of passing an invalid ID to the API.
+		// When is_dynamic_content() is true, Elementor renders server-side and
+		// the data-bac-cfg attribute on the div carries the resolved value.
+		// For static values, settings[key] contains the literal input.
 		function _bacPlain( key ) {
-			if ( settings.__dynamic__ && settings.__dynamic__[ key ] ) { return ''; }
 			return String( settings[ key ] || '' ).trim();
 		}
 		var bacCfg = JSON.stringify( {

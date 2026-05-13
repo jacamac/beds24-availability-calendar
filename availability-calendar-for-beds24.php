@@ -3,7 +3,7 @@
  * Plugin Name:       Availability Calendar for Beds24
  * Plugin URI:        https://github.com/jacamac/availability-calendar-for-beds24
  * Description:       Displays a Beds24 room or property availability calendar via the [avail_calendar] shortcode and an Elementor widget.
- * Version:           1.4.11-dev
+ * Version:           1.4.12-dev
  * Requires at least: 5.9
  * Requires PHP:      7.4
  * Author:            Jacques Leisy
@@ -33,7 +33,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'BAC_VERSION', '1.4.11-dev' );
+define( 'BAC_VERSION', '1.4.12-dev' );
 define( 'BAC_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 define( 'BAC_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'BAC_DEFAULT_MONTHS_DESKTOP', 3 );
@@ -243,10 +243,11 @@ $bac_instances = array();
  * Register a calendar instance and ensure assets are enqueued.
  * Returns the container div HTML.
  *
- * @param array<string, mixed> $config  Validated config array for AvailCalendar JS class.
+ * @param array<string, mixed>  $config      Validated config array for AvailCalendar JS class.
+ * @param array<string, string> $extra_attrs Optional extra HTML attributes for the wrapper div.
  * @return string Container div HTML.
  */
-function bac_register_instance( array $config ): string {
+function bac_register_instance( array $config, array $extra_attrs = array() ): string {
 	global $bac_instances;
 
 	$instance_id           = 'bac-' . wp_unique_id();
@@ -256,9 +257,15 @@ function bac_register_instance( array $config ): string {
 	wp_enqueue_style( 'bac-calendar' );
 	wp_enqueue_script( 'bac-calendar' );
 
+	$attrs_html = '';
+	foreach ( $extra_attrs as $attr_name => $attr_value ) {
+		$attrs_html .= sprintf( ' %s="%s"', esc_attr( $attr_name ), esc_attr( $attr_value ) );
+	}
+
 	return sprintf(
-		'<div id="%s" class="bac-wrapper" aria-label="%s"></div>',
+		'<div id="%s" class="bac-wrapper"%s aria-label="%s"></div>',
 		esc_attr( $instance_id ),
+		$attrs_html,
 		esc_attr__( 'Availability calendar', 'availability-calendar-for-beds24' )
 	);
 }
