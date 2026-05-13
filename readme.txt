@@ -4,7 +4,7 @@ Tags:               beds24, availability, calendar, booking, hotel, b&b
 Requires at least:  5.9
 Tested up to:       6.9
 Requires PHP:       7.4
-Stable tag:         1.3.5
+Stable tag:         1.5.0
 License:            GPLv2 or later
 License URI:        https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -60,6 +60,11 @@ Display a calendar for a whole property:
   availability data for 5 minutes and is cleared when the browser tab is closed.
 
 == Changelog ==
+
+= 1.5.0 =
+* Add Elementor live preview: the calendar now renders live in the editor canvas — changes to room/property ID, month count, start date, and language update instantly without saving
+* Add full Style-tab live preview: all colour, typography, and tile settings are visible immediately as you adjust them in the editor
+* Add dynamic field support in the Elementor preview: Room ID and Property ID fields now accept Elementor dynamic tags (e.g. ACF fields) — the editor preview fetches and displays live Beds24 availability data using the resolved field value
 
 = 1.3.5 =
 * Add Elementor Style tab with Colors, Typography, and Tiles sections — available/unavailable colours, calendar background, text, past days, month title, day headers, today ring, font controls, tile size, border radius, tile gap, and month gap are all now configurable directly in the Elementor editor

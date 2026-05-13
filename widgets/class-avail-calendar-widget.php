@@ -93,22 +93,24 @@ class Avail_Calendar_Widget extends \Elementor\Widget_Base {
 		$this->add_control(
 			'roomid',
 			array(
-				'label'       => esc_html__( 'Room ID', 'availability-calendar-for-beds24' ),
-				'type'        => \Elementor\Controls_Manager::TEXT,
-				'input_type'  => 'number',
-				'placeholder' => esc_html__( 'e.g. 12345', 'availability-calendar-for-beds24' ),
-				'description' => esc_html__( 'Beds24 room ID for a single room calendar.', 'availability-calendar-for-beds24' ),
+				'label'              => esc_html__( 'Room ID', 'availability-calendar-for-beds24' ),
+				'type'               => \Elementor\Controls_Manager::TEXT,
+				'input_type'         => 'number',
+				'placeholder'        => esc_html__( 'e.g. 12345', 'availability-calendar-for-beds24' ),
+				'description'        => esc_html__( 'Beds24 room ID for a single room calendar.', 'availability-calendar-for-beds24' ),
+				'frontend_available' => true,
 			)
 		);
 
 		$this->add_control(
 			'propid',
 			array(
-				'label'       => esc_html__( 'Property ID', 'availability-calendar-for-beds24' ),
-				'type'        => \Elementor\Controls_Manager::TEXT,
-				'input_type'  => 'number',
-				'placeholder' => esc_html__( 'e.g. 67890', 'availability-calendar-for-beds24' ),
-				'description' => esc_html__( 'Beds24 property ID for a whole-property calendar.', 'availability-calendar-for-beds24' ),
+				'label'              => esc_html__( 'Property ID', 'availability-calendar-for-beds24' ),
+				'type'               => \Elementor\Controls_Manager::TEXT,
+				'input_type'         => 'number',
+				'placeholder'        => esc_html__( 'e.g. 67890', 'availability-calendar-for-beds24' ),
+				'description'        => esc_html__( 'Beds24 property ID for a whole-property calendar.', 'availability-calendar-for-beds24' ),
+				'frontend_available' => true,
 			)
 		);
 
@@ -126,38 +128,40 @@ class Avail_Calendar_Widget extends \Elementor\Widget_Base {
 		$this->add_responsive_control(
 			'nummonths',
 			array(
-				'label'          => esc_html__( 'Months to Display', 'availability-calendar-for-beds24' ),
-				'type'           => \Elementor\Controls_Manager::SLIDER,
-				'size_units'     => array(),
-				'range'          => array(
+				'label'              => esc_html__( 'Months to Display', 'availability-calendar-for-beds24' ),
+				'type'               => \Elementor\Controls_Manager::SLIDER,
+				'size_units'         => array(),
+				'range'              => array(
 					'px' => array(
 						'min'  => 1,
 						'max'  => 12,
 						'step' => 1,
 					),
 				),
-				'default'        => array(
+				'default'            => array(
 					'unit' => 'px',
-					'size' => 3,
+					'size' => BAC_DEFAULT_MONTHS_DESKTOP,
 				),
-				'tablet_default' => array(
+				'tablet_default'     => array(
 					'unit' => 'px',
-					'size' => 2,
+					'size' => BAC_DEFAULT_MONTHS_TABLET,
 				),
-				'mobile_default' => array(
+				'mobile_default'     => array(
 					'unit' => 'px',
-					'size' => 1,
+					'size' => BAC_DEFAULT_MONTHS_MOBILE,
 				),
+				'frontend_available' => true,
 			)
 		);
 
 		$this->add_control(
 			'startmonth',
 			array(
-				'label'   => esc_html__( 'Start Month', 'availability-calendar-for-beds24' ),
-				'type'    => \Elementor\Controls_Manager::SELECT,
-				'default' => '0',
-				'options' => array(
+				'label'              => esc_html__( 'Start Month', 'availability-calendar-for-beds24' ),
+				'type'               => \Elementor\Controls_Manager::SELECT,
+				'default'            => '0',
+				'frontend_available' => true,
+				'options'            => array(
 					'0'  => esc_html__( 'Current month', 'availability-calendar-for-beds24' ),
 					'1'  => esc_html__( 'January', 'availability-calendar-for-beds24' ),
 					'2'  => esc_html__( 'February', 'availability-calendar-for-beds24' ),
@@ -178,10 +182,11 @@ class Avail_Calendar_Widget extends \Elementor\Widget_Base {
 		$this->add_control(
 			'startyear',
 			array(
-				'label'       => esc_html__( 'Start Year', 'availability-calendar-for-beds24' ),
-				'type'        => \Elementor\Controls_Manager::TEXT,
-				'input_type'  => 'number',
-				'placeholder' => esc_html__( 'Leave empty for current year', 'availability-calendar-for-beds24' ),
+				'label'              => esc_html__( 'Start Year', 'availability-calendar-for-beds24' ),
+				'type'               => \Elementor\Controls_Manager::TEXT,
+				'input_type'         => 'number',
+				'placeholder'        => esc_html__( 'Leave empty for current year', 'availability-calendar-for-beds24' ),
+				'frontend_available' => true,
 			)
 		);
 
@@ -208,18 +213,21 @@ class Avail_Calendar_Widget extends \Elementor\Widget_Base {
 		$this->add_control(
 			'lang',
 			array(
-				'label'       => esc_html__( 'Language Override', 'availability-calendar-for-beds24' ),
-				'type'        => \Elementor\Controls_Manager::TEXT,
-				'placeholder' => esc_html__( 'e.g. fr, de, en, it', 'availability-calendar-for-beds24' ),
-				'description' => esc_html__( 'Any BCP-47 language tag. Leave blank for automatic detection.', 'availability-calendar-for-beds24' ),
+				'label'              => esc_html__( 'Language Override', 'availability-calendar-for-beds24' ),
+				'type'               => \Elementor\Controls_Manager::TEXT,
+				'placeholder'        => esc_html__( 'e.g. fr, de, en, it', 'availability-calendar-for-beds24' ),
+				'description'        => esc_html__( 'Any BCP-47 language tag. Leave blank for automatic detection.', 'availability-calendar-for-beds24' ),
+				'frontend_available' => true,
 			)
 		);
 
 		$this->end_controls_section();
 
-		/* ══════════════════════════════════════════════════════
-		   STYLE TAB
-		   ══════════════════════════════════════════════════════ */
+		/*
+		══════════════════════════════════════════════════════
+			STYLE TAB
+			══════════════════════════════════════════════════════
+		*/
 
 		/* ── Section: Colors ── */
 		$this->start_controls_section(
@@ -245,9 +253,9 @@ class Avail_Calendar_Widget extends \Elementor\Widget_Base {
 				'type'      => \Elementor\Controls_Manager::COLOR,
 				'default'   => '#34a853',
 				'selectors' => array(
-					'{{WRAPPER}} .bac-day.bac-available'              => 'background: {{VALUE}};',
+					'{{WRAPPER}} .bac-day.bac-available' => 'background: {{VALUE}};',
 					'{{WRAPPER}} .bac-day.bac-split-avail-am::before' => 'background: {{VALUE}};',
-					'{{WRAPPER}} .bac-day.bac-split-avail-pm'         => 'background: {{VALUE}};',
+					'{{WRAPPER}} .bac-day.bac-split-avail-pm' => 'background: {{VALUE}};',
 				),
 			)
 		);
@@ -259,8 +267,8 @@ class Avail_Calendar_Widget extends \Elementor\Widget_Base {
 				'type'      => \Elementor\Controls_Manager::COLOR,
 				'default'   => '#ea4335',
 				'selectors' => array(
-					'{{WRAPPER}} .bac-day.bac-unavailable'            => 'background: {{VALUE}};',
-					'{{WRAPPER}} .bac-day.bac-split-avail-am'         => 'background: {{VALUE}};',
+					'{{WRAPPER}} .bac-day.bac-unavailable' => 'background: {{VALUE}};',
+					'{{WRAPPER}} .bac-day.bac-split-avail-am' => 'background: {{VALUE}};',
 					'{{WRAPPER}} .bac-day.bac-split-avail-pm::before' => 'background: {{VALUE}};',
 				),
 			)
@@ -396,9 +404,16 @@ class Avail_Calendar_Widget extends \Elementor\Widget_Base {
 				'type'       => \Elementor\Controls_Manager::SLIDER,
 				'size_units' => array( 'px' ),
 				'range'      => array(
-					'px' => array( 'min' => 24, 'max' => 60, 'step' => 1 ),
+					'px' => array(
+						'min'  => 24,
+						'max'  => 60,
+						'step' => 1,
+					),
 				),
-				'default'    => array( 'unit' => 'px', 'size' => 36 ),
+				'default'    => array(
+					'unit' => 'px',
+					'size' => 36,
+				),
 				'selectors'  => array(
 					'{{WRAPPER}} .bac-day'     => 'width: {{SIZE}}{{UNIT}}; height: {{SIZE}}{{UNIT}};',
 					'{{WRAPPER}} .bac-dow-row' => 'grid-template-columns: repeat(7, {{SIZE}}{{UNIT}});',
@@ -414,9 +429,16 @@ class Avail_Calendar_Widget extends \Elementor\Widget_Base {
 				'type'       => \Elementor\Controls_Manager::SLIDER,
 				'size_units' => array( 'px' ),
 				'range'      => array(
-					'px' => array( 'min' => 0, 'max' => 50, 'step' => 1 ),
+					'px' => array(
+						'min'  => 0,
+						'max'  => 50,
+						'step' => 1,
+					),
 				),
-				'default'    => array( 'unit' => 'px', 'size' => 7 ),
+				'default'    => array(
+					'unit' => 'px',
+					'size' => 7,
+				),
 				'selectors'  => array(
 					'{{WRAPPER}} .bac-day' => 'border-radius: {{SIZE}}{{UNIT}};',
 				),
@@ -430,9 +452,16 @@ class Avail_Calendar_Widget extends \Elementor\Widget_Base {
 				'type'       => \Elementor\Controls_Manager::SLIDER,
 				'size_units' => array( 'px' ),
 				'range'      => array(
-					'px' => array( 'min' => 0, 'max' => 16, 'step' => 1 ),
+					'px' => array(
+						'min'  => 0,
+						'max'  => 16,
+						'step' => 1,
+					),
 				),
-				'default'    => array( 'unit' => 'px', 'size' => 4 ),
+				'default'    => array(
+					'unit' => 'px',
+					'size' => 4,
+				),
 				'selectors'  => array(
 					'{{WRAPPER}} .bac-dow-row' => 'gap: {{SIZE}}{{UNIT}}; margin-bottom: {{SIZE}}{{UNIT}};',
 					'{{WRAPPER}} .bac-grid'    => 'gap: {{SIZE}}{{UNIT}};',
@@ -447,9 +476,16 @@ class Avail_Calendar_Widget extends \Elementor\Widget_Base {
 				'type'       => \Elementor\Controls_Manager::SLIDER,
 				'size_units' => array( 'px' ),
 				'range'      => array(
-					'px' => array( 'min' => 0, 'max' => 80, 'step' => 4 ),
+					'px' => array(
+						'min'  => 0,
+						'max'  => 80,
+						'step' => 4,
+					),
 				),
-				'default'    => array( 'unit' => 'px', 'size' => 28 ),
+				'default'    => array(
+					'unit' => 'px',
+					'size' => 28,
+				),
 				'selectors'  => array(
 					'{{WRAPPER}} .bac-strip' => 'gap: {{SIZE}}{{UNIT}};',
 				),
@@ -457,6 +493,25 @@ class Avail_Calendar_Widget extends \Elementor\Widget_Base {
 		);
 
 		$this->end_controls_section();
+	}
+
+	// ─── Dynamic content flag ────────────
+
+	/**
+	 * Tell Elementor to render this widget server-side (via AJAX) when roomid
+	 * or propid is supplied through a dynamic tag (e.g. an ACF field).
+	 *
+	 * In that case content_template() cannot resolve the dynamic value; the PHP
+	 * render() method can via get_settings_for_display(). Elementor replaces the
+	 * preview DOM with the server-rendered HTML whenever a setting changes.
+	 */
+	public function is_dynamic_content(): bool {
+		// Always render server-side in the editor so dynamic tags (ACF fields,
+		// post meta, etc.) are resolved via get_settings_for_display() in PHP.
+		// NOTE: must NOT call get_settings() here — Elementor calls this method
+		// on widget types during editor script loading, before any instance is
+		// bound to a post, so get_settings() returns null and causes a fatal error.
+		return true;
 	}
 
 	// ─── Render (front-end + Elementor preview) ────────────
@@ -484,38 +539,33 @@ class Avail_Calendar_Widget extends \Elementor\Widget_Base {
 	 * Render the widget output on the frontend.
 	 */
 	protected function render(): void {
-		// get_settings_for_display() resolves dynamic tags (e.g. ACF roomid/propid).
-		//
-		// For the responsive slider we use get_data('settings') — the raw stored
-		// element JSON — instead of get_settings(). Elementor skips register_controls()
-		// on the front-end as a performance optimisation; without it, get_settings()
-		// cannot apply control defaults, so nummonths_tablet / nummonths_mobile come
-		// back missing and our code would incorrectly fall back to the desktop value.
-		//
-		// When tablet/mobile are absent from get_data('settings') the user never moved
-		// those sliders away from their defaults, so we fall back to the same values
-		// declared as tablet_default / mobile_default in register_controls() below.
-		$s_display = $this->get_settings_for_display();
-		$s_data    = $this->get_data( 'settings' );
-		if ( ! is_array( $s_data ) ) {
-			$s_data = array();
-		}
+		$s = $this->get_settings_for_display();
 
 		// Build raw values from widget settings.
 		$raw = array(
-			'roomid'          => $s_display['roomid'] ?? '',
-			'propid'          => $s_display['propid'] ?? '',
-			'nummonths'       => $this->slider_size( $s_data['nummonths'] ?? array(), 3 ),
-			// Fallbacks 2 / 1 must match tablet_default / mobile_default in register_controls().
-			'nummonthstablet' => $this->slider_size( $s_data['nummonths_tablet'] ?? array(), 2 ),
-			'nummonthsmobile' => $this->slider_size( $s_data['nummonths_mobile'] ?? array(), 1 ),
-			'startmonth'      => $s_display['startmonth'] ?? '',
-			'startyear'       => $s_display['startyear'] ?? '',
-			'lang'            => $s_display['lang'] ?? '',
+			'roomid'          => $s['roomid'] ?? '',
+			'propid'          => $s['propid'] ?? '',
+			'nummonths'       => $this->slider_size( $s['nummonths'] ?? array(), BAC_DEFAULT_MONTHS_DESKTOP ),
+			'nummonthstablet' => $this->slider_size( $s['nummonths_tablet'] ?? array(), BAC_DEFAULT_MONTHS_TABLET ),
+			'nummonthsmobile' => $this->slider_size( $s['nummonths_mobile'] ?? array(), BAC_DEFAULT_MONTHS_MOBILE ),
+			'startmonth'      => $s['startmonth'] ?? '',
+			'startyear'       => $s['startyear'] ?? '',
+			'lang'            => $s['lang'] ?? '',
 		);
 
 		$config = bac_sanitize_config( $raw );
-		$html   = bac_register_instance( $config );
+
+		// In edit mode, attach the resolved config as a data attribute so the
+		// Elementor preview JS handler can initialise AvailCalendar directly —
+		// bac_footer_init() does not run during Elementor's AJAX widget render.
+		$extra_attrs = array();
+		if ( \Elementor\Plugin::$instance && \Elementor\Plugin::$instance->editor->is_edit_mode() ) {
+			$preview_cfg = $config;
+			unset( $preview_cfg['containerId'] );
+			$extra_attrs['data-bac-cfg'] = (string) wp_json_encode( $preview_cfg );
+		}
+
+		$html = bac_register_instance( $config, $extra_attrs );
 
 		/*
 		 * Safety rationale for the phpcs:ignore below:
@@ -526,60 +576,46 @@ class Avail_Calendar_Widget extends \Elementor\Widget_Base {
 		 */
 		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- see rationale above
 		echo $html;
-
-		// In the Elementor editor the wp_footer hook doesn't fire inside the
-		// preview iframe, so we attach the init script directly to our
-		// already-enqueued bac-calendar handle via wp_add_inline_script().
-		// This keeps all script management through WordPress APIs and avoids
-		// raw echo <script> blocks.
-		if ( \Elementor\Plugin::$instance->editor->is_edit_mode() ) {
-			/*
-			 * Safety rationale:
-			 * $config is the validated output of bac_sanitize_config():
-			 *   all integers via absint(), lang via regex whitelist.
-			 * wp_json_encode() serialises it to safe JSON.
-			 * The surrounding JS is a static string literal with no
-			 * user-controlled interpolation other than the JSON blob.
-			 */
-			$json   = wp_json_encode( $config );
-			$script = "(function(){
-  var cfg = {$json};
-  function tryInit() {
-    if ( typeof AvailCalendar !== 'undefined' ) {
-      new AvailCalendar( cfg );
-    } else {
-      setTimeout( tryInit, 50 );
-    }
-  }
-  tryInit();
-})();";
-			wp_add_inline_script( 'bac-calendar', $script );
-		}
 	}
 
-	// ─── Elementor editor content template (JS preview) ───
+	// ─── Elementor editor live-preview template ────────────
 
 	/**
-	 * Render the live preview placeholder in the Elementor editor.
+	 * Underscore.js template used by Elementor for the editor canvas preview.
+	 *
+	 * All settings are serialised into a data-bac-cfg attribute so the JS handler
+	 * can read them without depending on elementorFrontend.config (which only
+	 * includes controls marked frontend_available and requires a page save to
+	 * refresh). The template re-renders on every non-CSS setting change, so the
+	 * attribute is always current.
 	 */
 	protected function content_template(): void {
-		// The JS preview template shown while editing in Elementor.
-		// We output a placeholder — the PHP render() drives the real preview
-		// via the server-side rendering mechanism.
 		?>
-		<div class="bac-editor-placeholder" style="
-			background: #f0f0f0;
-			border: 2px dashed #ccc;
-			border-radius: 8px;
-			padding: 32px;
-			text-align: center;
-			color: #999;
-			font-family: sans-serif;
-			font-size: 14px;
-		">
-			<span class="eicon-calendar" style="font-size: 32px; display: block; margin-bottom: 8px;"></span>
-			Availability Calendar
-		</div>
+		<#
+		var containerId = 'bac-' + view.model.id;
+		function _bacSz( v, fb ) {
+			if ( ! v ) { return fb; }
+			var n = ( 'object' === typeof v ) ? parseInt( v.size, 10 ) : parseInt( v, 10 );
+			return ( isNaN( n ) || n < 1 ) ? fb : n;
+		}
+		// When is_dynamic_content() is true, Elementor renders server-side and
+		// the data-bac-cfg attribute on the div carries the resolved value.
+		// For static values, settings[key] contains the literal input.
+		function _bacPlain( key ) {
+			return String( settings[ key ] || '' ).trim();
+		}
+		var bacCfg = JSON.stringify( {
+			roomid:          _bacPlain( 'roomid' ),
+			propid:          _bacPlain( 'propid' ),
+			numMonths:       _bacSz( settings.nummonths,        3 ),
+			numMonthsTablet: _bacSz( settings.nummonths_tablet, 2 ),
+			numMonthsMobile: _bacSz( settings.nummonths_mobile, 1 ),
+			startMonth:      parseInt( settings.startmonth, 10 ) > 0 ? parseInt( settings.startmonth, 10 ) : null,
+			startYear:       parseInt( settings.startyear,   10 ) > 0 ? parseInt( settings.startyear,   10 ) : null,
+			lang:            _bacPlain( 'lang' ) || 'en',
+		} );
+		#>
+		<div id="{{ containerId }}" class="bac-wrapper" data-bac-cfg='{{{ bacCfg }}}'></div>
 		<?php
 	}
 }

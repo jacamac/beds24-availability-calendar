@@ -3,7 +3,7 @@
  * Plugin Name:       Availability Calendar for Beds24
  * Plugin URI:        https://github.com/jacamac/availability-calendar-for-beds24
  * Description:       Displays a Beds24 room or property availability calendar via the [avail_calendar] shortcode and an Elementor widget.
- * Version:           1.3.5
+ * Version:           1.5.0
  * Requires at least: 5.9
  * Requires PHP:      7.4
  * Author:            Jacques Leisy
@@ -12,7 +12,6 @@
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain:       availability-calendar-for-beds24
  * GitHub Plugin URI: jacamac/availability-calendar-for-beds24
- * GitHub Branch:     main
  * Primary Branch:    main
  *
  * @package Availability_Calendar_For_Beds24
@@ -33,9 +32,12 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'BAC_VERSION', '1.3.5' );
+define( 'BAC_VERSION', '1.5.0' );
 define( 'BAC_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 define( 'BAC_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
+define( 'BAC_DEFAULT_MONTHS_DESKTOP', 3 );
+define( 'BAC_DEFAULT_MONTHS_TABLET', 2 );
+define( 'BAC_DEFAULT_MONTHS_MOBILE', 1 );
 
 /*
 ═══════════════════════════════════════════════════════════
@@ -46,7 +48,7 @@ define( 'BAC_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 
 	Default: checks tagged releases on the 'main' branch.
 	To track a development branch instead, add to wp-config.php:
-		define( 'BAC_UPDATE_BRANCH', 'develop' );
+		define( 'BAC_UPDATE_BRANCH', 'development' );
 	═══════════════════════════════════════════════════════════
 */
 
@@ -64,17 +66,24 @@ if ( file_exists( $bac_puc ) ) {
 		$bac_checker->getVcsApi()->enableReleaseAssets(); // @phpstan-ignore method.notFound (GitHubApi uses ReleaseAssetSupport trait; base Api class return type hides it)
 	}
 
-	// PUC reads the remote plugin file at the release tag and uses its Version
-	// header — which is always the static placeholder in the repo source.  The
-	// release download URL is the one thing that reliably encodes the real tag
-	// version (.../releases/download/v1.2.1/... or .../zipball/v1.2.1).
-	// Re-derive the version from that URL so the comparison is correct.
 	add_filter(
 		'puc_request_info_result-availability-calendar-for-beds24',
 		function ( $info ) {
-			if ( $info !== null && ! empty( $info->download_url ) ) {
+			if ( null === $info ) {
+				return $info;
+			}
+			if ( defined( 'BAC_UPDATE_BRANCH' ) && BAC_UPDATE_BRANCH ) {
+				// Branch mode: PUC's branch zipball is named {repo}-{branch}/ by GitHub,
+				// so WordPress would install it as a separate plugin instead of updating.
+				// Point to the correctly-named zip built by CI and attached to the
+				// rolling dev-latest pre-release on every push to the development branch.
+				$info->download_url = 'https://github.com/jacamac/availability-calendar-for-beds24/releases/download/dev-latest/availability-calendar-for-beds24.zip';
+			} elseif ( ! empty( $info->download_url ) ) {
+				// Release mode: PUC reads the Version header from the source file, which
+				// contains the dev placeholder. Re-derive the real version from the
+				// release download URL (.../releases/download/v1.2.3/... or .../zipball/v1.2.3).
 				if ( preg_match( '~(?:releases/download|zipball)/v?([\d.]+)~', $info->download_url, $m ) ) {
-					$info->version = $m[1];
+					$info->version = $m[1]; // @phpstan-ignore property.notFound (PUC info object has dynamic properties; $version coexists with $download_url)
 				}
 			}
 			return $info;
@@ -233,10 +242,11 @@ $bac_instances = array();
  * Register a calendar instance and ensure assets are enqueued.
  * Returns the container div HTML.
  *
- * @param array<string, mixed> $config  Validated config array for AvailCalendar JS class.
+ * @param array<string, mixed>  $config      Validated config array for AvailCalendar JS class.
+ * @param array<string, string> $extra_attrs Optional extra HTML attributes for the wrapper div.
  * @return string Container div HTML.
  */
-function bac_register_instance( array $config ): string {
+function bac_register_instance( array $config, array $extra_attrs = array() ): string {
 	global $bac_instances;
 
 	$instance_id           = 'bac-' . wp_unique_id();
@@ -246,9 +256,15 @@ function bac_register_instance( array $config ): string {
 	wp_enqueue_style( 'bac-calendar' );
 	wp_enqueue_script( 'bac-calendar' );
 
+	$attrs_html = '';
+	foreach ( $extra_attrs as $attr_name => $attr_value ) {
+		$attrs_html .= sprintf( ' %s="%s"', esc_attr( $attr_name ), esc_attr( $attr_value ) );
+	}
+
 	return sprintf(
-		'<div id="%s" class="bac-wrapper" aria-label="%s"></div>',
+		'<div id="%s" class="bac-wrapper"%s aria-label="%s"></div>',
 		esc_attr( $instance_id ),
+		$attrs_html,
 		esc_attr__( 'Availability calendar', 'availability-calendar-for-beds24' )
 	);
 }
@@ -280,8 +296,8 @@ function bac_sanitize_config( array $raw ): array {
 		$config['propid'] = $propid;
 	}
 
-	$raw_months          = absint( $raw['nummonths'] ?? 3 );
-	$nummonths           = max( 1, min( 12, $raw_months ? $raw_months : 3 ) );
+	$raw_months          = absint( $raw['nummonths'] ?? BAC_DEFAULT_MONTHS_DESKTOP );
+	$nummonths           = max( 1, min( 12, $raw_months ? $raw_months : BAC_DEFAULT_MONTHS_DESKTOP ) );
 	$config['numMonths'] = $nummonths;
 
 	// Always include tablet/mobile counts so the JS resize listener is always
@@ -420,5 +436,23 @@ add_action(
 	function () {
 		wp_enqueue_style( 'bac-calendar' );
 		wp_enqueue_script( 'bac-calendar' );
+	}
+);
+
+// Load the live-preview JS handler inside the Elementor preview iframe.
+// This script initialises AvailCalendar in demo mode and re-initialises it
+// whenever widget settings change, giving instant feedback in the editor.
+add_action(
+	'elementor/preview/enqueue_scripts',
+	function () {
+		wp_enqueue_style( 'bac-calendar' );
+		wp_enqueue_script( 'bac-calendar' );
+		wp_enqueue_script(
+			'bac-elementor-preview',
+			BAC_PLUGIN_URL . 'assets/elementor-preview.js',
+			array( 'elementor-frontend', 'bac-calendar' ),
+			BAC_VERSION,
+			true
+		);
 	}
 );
