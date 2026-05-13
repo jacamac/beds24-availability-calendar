@@ -138,15 +138,15 @@ class Avail_Calendar_Widget extends \Elementor\Widget_Base {
 				),
 				'default'        => array(
 					'unit' => 'px',
-					'size' => 3,
+					'size' => BAC_DEFAULT_MONTHS_DESKTOP,
 				),
 				'tablet_default' => array(
 					'unit' => 'px',
-					'size' => 2,
+					'size' => BAC_DEFAULT_MONTHS_TABLET,
 				),
 				'mobile_default' => array(
 					'unit' => 'px',
-					'size' => 1,
+					'size' => BAC_DEFAULT_MONTHS_MOBILE,
 				),
 			)
 		);
@@ -516,22 +516,13 @@ class Avail_Calendar_Widget extends \Elementor\Widget_Base {
 	protected function render(): void {
 		$s = $this->get_settings_for_display();
 
-		$bac_debug = array(
-			'nummonths'        => $s['nummonths'] ?? 'MISSING',
-			'nummonths_tablet' => $s['nummonths_tablet'] ?? 'MISSING',
-			'nummonths_mobile' => $s['nummonths_mobile'] ?? 'MISSING',
-		);
-		// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- temporary debug, remove once defaults confirmed
-		error_log( '[BAC debug] nummonths raw from get_settings_for_display: ' . wp_json_encode( $bac_debug ) );
-
 		// Build raw values from widget settings.
 		$raw = array(
 			'roomid'          => $s['roomid'] ?? '',
 			'propid'          => $s['propid'] ?? '',
-			// Fallbacks 3 / 2 / 1 must match default / tablet_default / mobile_default in register_controls().
-			'nummonths'       => $this->slider_size( $s['nummonths'] ?? array(), 3 ),
-			'nummonthstablet' => $this->slider_size( $s['nummonths_tablet'] ?? array(), 2 ),
-			'nummonthsmobile' => $this->slider_size( $s['nummonths_mobile'] ?? array(), 1 ),
+			'nummonths'       => $this->slider_size( $s['nummonths'] ?? array(), BAC_DEFAULT_MONTHS_DESKTOP ),
+			'nummonthstablet' => $this->slider_size( $s['nummonths_tablet'] ?? array(), BAC_DEFAULT_MONTHS_TABLET ),
+			'nummonthsmobile' => $this->slider_size( $s['nummonths_mobile'] ?? array(), BAC_DEFAULT_MONTHS_MOBILE ),
 			'startmonth'      => $s['startmonth'] ?? '',
 			'startyear'       => $s['startyear'] ?? '',
 			'lang'            => $s['lang'] ?? '',

@@ -3,7 +3,7 @@
  * Plugin Name:       Availability Calendar for Beds24
  * Plugin URI:        https://github.com/jacamac/availability-calendar-for-beds24
  * Description:       Displays a Beds24 room or property availability calendar via the [avail_calendar] shortcode and an Elementor widget.
- * Version:           1.4.4-dev
+ * Version:           1.4.5-dev
  * Requires at least: 5.9
  * Requires PHP:      7.4
  * Author:            Jacques Leisy
@@ -33,9 +33,12 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'BAC_VERSION', '1.4.4-dev' );
+define( 'BAC_VERSION', '1.4.5-dev' );
 define( 'BAC_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 define( 'BAC_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
+define( 'BAC_DEFAULT_MONTHS_DESKTOP', 3 );
+define( 'BAC_DEFAULT_MONTHS_TABLET', 2 );
+define( 'BAC_DEFAULT_MONTHS_MOBILE', 1 );
 
 /*
 ═══════════════════════════════════════════════════════════
@@ -287,8 +290,8 @@ function bac_sanitize_config( array $raw ): array {
 		$config['propid'] = $propid;
 	}
 
-	$raw_months          = absint( $raw['nummonths'] ?? 3 );
-	$nummonths           = max( 1, min( 12, $raw_months ? $raw_months : 3 ) );
+	$raw_months          = absint( $raw['nummonths'] ?? BAC_DEFAULT_MONTHS_DESKTOP );
+	$nummonths           = max( 1, min( 12, $raw_months ? $raw_months : BAC_DEFAULT_MONTHS_DESKTOP ) );
 	$config['numMonths'] = $nummonths;
 
 	// Always include tablet/mobile counts so the JS resize listener is always
