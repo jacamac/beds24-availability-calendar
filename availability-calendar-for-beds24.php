@@ -3,7 +3,7 @@
  * Plugin Name:       Availability Calendar for Beds24
  * Plugin URI:        https://github.com/jacamac/availability-calendar-for-beds24
  * Description:       Displays a Beds24 room or property availability calendar via the [avail_calendar] shortcode and an Elementor widget.
- * Version:           1.3.5
+ * Version:           1.4.0-dev
  * Requires at least: 5.9
  * Requires PHP:      7.4
  * Author:            Jacques Leisy
@@ -12,7 +12,7 @@
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain:       availability-calendar-for-beds24
  * GitHub Plugin URI: jacamac/availability-calendar-for-beds24
- * GitHub Branch:     main
+ * GitHub Branch:     development
  * Primary Branch:    main
  *
  * @package Availability_Calendar_For_Beds24
@@ -33,7 +33,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'BAC_VERSION', '1.3.5' );
+define( 'BAC_VERSION', '1.4.0-dev' );
 define( 'BAC_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 define( 'BAC_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 
