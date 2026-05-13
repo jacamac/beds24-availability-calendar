@@ -568,15 +568,23 @@ class Avail_Calendar_Widget extends \Elementor\Widget_Base {
 			var n = ( 'object' === typeof v ) ? parseInt( v.size, 10 ) : parseInt( v, 10 );
 			return ( isNaN( n ) || n < 1 ) ? fb : n;
 		}
+		// Dynamic tags (ACF, post meta, etc.) are resolved server-side only.
+		// In the editor template they appear as empty or a raw tag shortcode.
+		// Detect via settings.__dynamic__ and return '' so the calendar falls
+		// back to demo mode instead of passing an invalid ID to the API.
+		function _bacPlain( key ) {
+			if ( settings.__dynamic__ && settings.__dynamic__[ key ] ) { return ''; }
+			return String( settings[ key ] || '' ).trim();
+		}
 		var bacCfg = JSON.stringify( {
-			roomid:          String( settings.roomid  || '' ).trim(),
-			propid:          String( settings.propid  || '' ).trim(),
+			roomid:          _bacPlain( 'roomid' ),
+			propid:          _bacPlain( 'propid' ),
 			numMonths:       _bacSz( settings.nummonths,        3 ),
 			numMonthsTablet: _bacSz( settings.nummonths_tablet, 2 ),
 			numMonthsMobile: _bacSz( settings.nummonths_mobile, 1 ),
 			startMonth:      parseInt( settings.startmonth, 10 ) > 0 ? parseInt( settings.startmonth, 10 ) : null,
 			startYear:       parseInt( settings.startyear,   10 ) > 0 ? parseInt( settings.startyear,   10 ) : null,
-			lang:            String( settings.lang || 'en' ),
+			lang:            _bacPlain( 'lang' ) || 'en',
 		} );
 		#>
 		<div id="{{ containerId }}" class="bac-wrapper" data-bac-cfg='{{{ bacCfg }}}'></div>
