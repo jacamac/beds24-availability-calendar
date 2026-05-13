@@ -540,60 +540,22 @@ class Avail_Calendar_Widget extends \Elementor\Widget_Base {
 		 */
 		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- see rationale above
 		echo $html;
-
-		// In the Elementor editor the wp_footer hook doesn't fire inside the
-		// preview iframe, so we attach the init script directly to our
-		// already-enqueued bac-calendar handle via wp_add_inline_script().
-		// This keeps all script management through WordPress APIs and avoids
-		// raw echo <script> blocks.
-		if ( \Elementor\Plugin::$instance->editor->is_edit_mode() ) {
-			/*
-			 * Safety rationale:
-			 * $config is the validated output of bac_sanitize_config():
-			 *   all integers via absint(), lang via regex whitelist.
-			 * wp_json_encode() serialises it to safe JSON.
-			 * The surrounding JS is a static string literal with no
-			 * user-controlled interpolation other than the JSON blob.
-			 */
-			$json   = wp_json_encode( $config );
-			$script = "(function(){
-  var cfg = {$json};
-  function tryInit() {
-    if ( typeof AvailCalendar !== 'undefined' ) {
-      new AvailCalendar( cfg );
-    } else {
-      setTimeout( tryInit, 50 );
-    }
-  }
-  tryInit();
-})();";
-			wp_add_inline_script( 'bac-calendar', $script );
-		}
 	}
 
-	// ─── Elementor editor content template (JS preview) ───
+	// ─── Elementor editor live-preview template ────────────
 
 	/**
-	 * Render the live preview placeholder in the Elementor editor.
+	 * Underscore.js template used by Elementor for the editor canvas preview.
+	 * The JS handler in assets/elementor-preview.js initialises AvailCalendar
+	 * in demo mode and re-initialises it on every settings change.
+	 * Colors update without re-initialisation via Elementor's selector CSS injection.
 	 */
 	protected function content_template(): void {
-		// The JS preview template shown while editing in Elementor.
-		// We output a placeholder — the PHP render() drives the real preview
-		// via the server-side rendering mechanism.
 		?>
-		<div class="bac-editor-placeholder" style="
-			background: #f0f0f0;
-			border: 2px dashed #ccc;
-			border-radius: 8px;
-			padding: 32px;
-			text-align: center;
-			color: #999;
-			font-family: sans-serif;
-			font-size: 14px;
-		">
-			<span class="eicon-calendar" style="font-size: 32px; display: block; margin-bottom: 8px;"></span>
-			Availability Calendar
-		</div>
+		<#
+		var containerId = 'bac-' + view.model.id;
+		#>
+		<div id="{{ containerId }}" class="bac-wrapper"></div>
 		<?php
 	}
 }
