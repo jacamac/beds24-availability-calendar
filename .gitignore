@@ -1,3 +1,7 @@
+# Claude Code project instructions (local dev only)
+CLAUDE.md
+ELEMENTOR_WIDGET_GUIDE.md
+
 # Composer dependencies — vendor/ excluded; lock file committed for reproducible CI builds
 vendor/
 
