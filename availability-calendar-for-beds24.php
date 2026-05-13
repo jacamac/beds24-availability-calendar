@@ -3,7 +3,7 @@
  * Plugin Name:       Availability Calendar for Beds24
  * Plugin URI:        https://github.com/jacamac/availability-calendar-for-beds24
  * Description:       Displays a Beds24 room or property availability calendar via the [avail_calendar] shortcode and an Elementor widget.
- * Version:           1.4.1-dev
+ * Version:           1.4.2-dev
  * Requires at least: 5.9
  * Requires PHP:      7.4
  * Author:            Jacques Leisy
@@ -33,7 +33,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'BAC_VERSION', '1.4.1-dev' );
+define( 'BAC_VERSION', '1.4.2-dev' );
 define( 'BAC_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 define( 'BAC_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 
@@ -46,7 +46,7 @@ define( 'BAC_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 
 	Default: checks tagged releases on the 'main' branch.
 	To track a development branch instead, add to wp-config.php:
-		define( 'BAC_UPDATE_BRANCH', 'develop' );
+		define( 'BAC_UPDATE_BRANCH', 'development' );
 	═══════════════════════════════════════════════════════════
 */
 
@@ -64,15 +64,22 @@ if ( file_exists( $bac_puc ) ) {
 		$bac_checker->getVcsApi()->enableReleaseAssets(); // @phpstan-ignore method.notFound (GitHubApi uses ReleaseAssetSupport trait; base Api class return type hides it)
 	}
 
-	// PUC reads the remote plugin file at the release tag and uses its Version
-	// header — which is always the static placeholder in the repo source.  The
-	// release download URL is the one thing that reliably encodes the real tag
-	// version (.../releases/download/v1.2.1/... or .../zipball/v1.2.1).
-	// Re-derive the version from that URL so the comparison is correct.
 	add_filter(
 		'puc_request_info_result-availability-calendar-for-beds24',
 		function ( $info ) {
-			if ( $info !== null && ! empty( $info->download_url ) ) {
+			if ( $info === null ) {
+				return $info;
+			}
+			if ( defined( 'BAC_UPDATE_BRANCH' ) && BAC_UPDATE_BRANCH ) {
+				// Branch mode: PUC's branch zipball is named {repo}-{branch}/ by GitHub,
+				// so WordPress would install it as a separate plugin instead of updating.
+				// Point to the correctly-named zip built by CI and attached to the
+				// rolling dev-latest pre-release on every push to the development branch.
+				$info->download_url = 'https://github.com/jacamac/availability-calendar-for-beds24/releases/download/dev-latest/availability-calendar-for-beds24.zip';
+			} elseif ( ! empty( $info->download_url ) ) {
+				// Release mode: PUC reads the Version header from the source file, which
+				// contains the dev placeholder. Re-derive the real version from the
+				// release download URL (.../releases/download/v1.2.3/... or .../zipball/v1.2.3).
 				if ( preg_match( '~(?:releases/download|zipball)/v?([\d.]+)~', $info->download_url, $m ) ) {
 					$info->version = $m[1];
 				}

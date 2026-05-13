@@ -4,7 +4,7 @@ name: CI
 on:
   push:
     branches:
-      - develop
+      - development
   pull_request:
     branches:
       - main

@@ -1,0 +1,91 @@
+name: Dev Release
+
+# Runs on every push to the development branch.
+# Lints first, then builds a correctly-named plugin zip and attaches it
+# to the rolling 'dev-latest' pre-release so PUC on dev sites can update
+# automatically without needing a version tag.
+on:
+  push:
+    branches:
+      - development
+
+permissions:
+  contents: write
+
+jobs:
+  lint:
+    name: PHP Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.1'
+          tools: composer, cs2pr
+
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-progress
+
+      - name: PHPCS
+        run: ./vendor/bin/phpcs --report=checkstyle -q | cs2pr
+
+      - name: PHPStan
+        run: ./vendor/bin/phpstan analyse --memory-limit=512M
+
+  release:
+    name: Build & Publish dev-latest
+    needs: lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.1'
+          tools: composer
+
+      - name: Build zip
+        run: |
+          mkdir -p /tmp/build/availability-calendar-for-beds24
+
+          rsync -av \
+            --exclude='.git' \
+            --exclude='.github' \
+            --exclude='.gitignore' \
+            --exclude='.DS_Store' \
+            --exclude='.claude' \
+            --exclude='CLAUDE.md' \
+            --exclude='README.md' \
+            --exclude='phpcs.xml' \
+            --exclude='phpstan.neon' \
+            --exclude='vendor' \
+            --exclude='*.zip' \
+            . /tmp/build/availability-calendar-for-beds24/
+
+          composer install --no-dev --prefer-dist --no-progress --no-interaction \
+            --working-dir=/tmp/build/availability-calendar-for-beds24
+
+          rm /tmp/build/availability-calendar-for-beds24/composer.json
+          rm /tmp/build/availability-calendar-for-beds24/composer.lock
+
+          cd /tmp/build
+          zip -r availability-calendar-for-beds24.zip availability-calendar-for-beds24/
+
+      - name: Update dev-latest pre-release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: dev-latest
+          name: "Development Build (latest)"
+          prerelease: true
+          make_latest: false
+          files: /tmp/build/availability-calendar-for-beds24.zip
+          body: |
+            Automated development build — **not for production use**.
+
+            Branch: `development`
+            Commit: `${{ github.sha }}`
+            Built: ${{ github.event.head_commit.timestamp }}
+
+            Install via **WordPress Admin → Plugins → Add New → Upload Plugin**,
+            or let PUC update automatically if `BAC_UPDATE_BRANCH` is set in `wp-config.php`.
