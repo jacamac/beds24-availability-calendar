@@ -1,16 +1,37 @@
 /**
  * Elementor editor live-preview handler for the Availability Calendar widget.
  *
- * Initialises AvailCalendar in demo mode (no roomid/propid) inside the
- * Elementor preview iframe and re-initialises it whenever widget settings
- * change, so adjustments to month count, language, and start month are
- * reflected instantly without a page reload.
+ * Initialises AvailCalendar inside the Elementor preview iframe and
+ * re-initialises it whenever widget settings change, so adjustments to
+ * room/property ID, month count, language, and start month are reflected
+ * instantly without a page reload.
  *
  * Colors update without re-initialisation — Elementor injects them as
  * inline CSS automatically via the `selectors` declared on each color control.
  */
 ( function () {
 	'use strict';
+
+	/**
+	 * Read a slider setting that may be stored as { size, unit } or as a plain number.
+	 *
+	 * Elementor stores slider values as objects in the model, but in some
+	 * editor contexts getElementSettings() resolves responsive controls to a
+	 * plain numeric value instead.  This helper handles both forms.
+	 *
+	 * @param {*}      val      Raw value from getElementSettings().
+	 * @param {number} fallback Returned when val is absent or invalid.
+	 * @return {number}
+	 */
+	function sliderVal( val, fallback ) {
+		if ( val === undefined || val === null || val === '' ) {
+			return fallback;
+		}
+		var n = ( typeof val === 'object' && val !== null )
+			? parseInt( val.size, 10 )
+			: parseInt( val, 10 );
+		return ( isNaN( n ) || n < 1 ) ? fallback : n;
+	}
 
 	var AvailCalendarHandler = elementorModules.frontend.handlers.Base.extend( {
 
@@ -39,12 +60,9 @@
 
 			var s = this.getElementSettings();
 
-			var numMonths = ( s.nummonths && s.nummonths.size )
-				? parseInt( s.nummonths.size, 10 ) : 3;
-			var numMonthsTablet = ( s.nummonths_tablet && s.nummonths_tablet.size )
-				? parseInt( s.nummonths_tablet.size, 10 ) : 2;
-			var numMonthsMobile = ( s.nummonths_mobile && s.nummonths_mobile.size )
-				? parseInt( s.nummonths_mobile.size, 10 ) : 1;
+			var numMonths       = sliderVal( s.nummonths,        3 );
+			var numMonthsTablet = sliderVal( s.nummonths_tablet, 2 );
+			var numMonthsMobile = sliderVal( s.nummonths_mobile, 1 );
 
 			// startmonth 0 = "current month" → pass null to AvailCalendar.
 			var startMonth = ( s.startmonth && parseInt( s.startmonth, 10 ) > 0 )
@@ -52,7 +70,11 @@
 			var startYear = ( s.startyear && parseInt( s.startyear, 10 ) > 0 )
 				? parseInt( s.startyear, 10 ) : null;
 
-			this._calInstance = new AvailCalendar( {
+			// Pass roomid / propid when configured so the preview shows live data.
+			var roomid = s.roomid ? String( s.roomid ).trim() : '';
+			var propid = s.propid ? String( s.propid ).trim() : '';
+
+			var cfg = {
 				containerId:     $wrapper.attr( 'id' ),
 				numMonths:       numMonths,
 				numMonthsTablet: numMonthsTablet,
@@ -60,8 +82,15 @@
 				startMonth:      startMonth,
 				startYear:       startYear,
 				lang:            s.lang || 'en',
-				// No roomid/propid → demo mode with randomised availability data.
-			} );
+			};
+
+			if ( roomid ) {
+				cfg.roomid = roomid;
+			} else if ( propid ) {
+				cfg.propid = propid;
+			}
+
+			this._calInstance = new AvailCalendar( cfg );
 		},
 	} );
 
