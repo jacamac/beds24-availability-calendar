@@ -1,10 +1,8 @@
 name: CI
 
-# Runs on every push to develop and on PRs targeting main.
+# Runs on PRs targeting main. Push-to-development linting is handled
+# by dev-release.yml, which gates the zip build on the same checks.
 on:
-  push:
-    branches:
-      - development
   pull_request:
     branches:
       - main
