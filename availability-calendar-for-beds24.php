@@ -319,8 +319,8 @@ function bac_sanitize_config( array $raw ): array {
 
 	$config['lang'] = bac_resolve_lang( $raw['lang'] ?? '' );
 
-	$allowed_schemes = array( 'solid', 'minimal', 'outline', 'soft', 'dot', 'custom' );
-	$scheme          = sanitize_key( $raw['scheme'] ?? 'solid' );
+	$allowed_schemes  = array( 'solid', 'minimal', 'outline', 'soft', 'dot', 'custom' );
+	$scheme           = sanitize_key( $raw['scheme'] ?? 'solid' );
 	$config['scheme'] = in_array( $scheme, $allowed_schemes, true ) ? $scheme : 'solid';
 
 	if ( 'custom' === $config['scheme'] ) {
@@ -333,19 +333,33 @@ function bac_sanitize_config( array $raw ): array {
 		$allowed_navs     = array( 'top-left', 'top-right', 'split' );
 
 		$v = sanitize_key( $raw['scheme_shape'] ?? '' );
-		if ( in_array( $v, $allowed_shapes, true ) )   { $config['schemeShape']   = $v; }
+		if ( in_array( $v, $allowed_shapes, true ) ) {
+			$config['schemeShape'] = $v;
+		}
 		$v = sanitize_key( $raw['scheme_avail'] ?? '' );
-		if ( in_array( $v, $allowed_avails, true ) )   { $config['schemeAvail']   = $v; }
+		if ( in_array( $v, $allowed_avails, true ) ) {
+			$config['schemeAvail'] = $v;
+		}
 		$v = sanitize_key( $raw['scheme_unavail'] ?? '' );
-		if ( in_array( $v, $allowed_unavails, true ) ) { $config['schemeUnavail'] = $v; }
+		if ( in_array( $v, $allowed_unavails, true ) ) {
+			$config['schemeUnavail'] = $v;
+		}
 		$v = sanitize_key( $raw['scheme_past'] ?? '' );
-		if ( in_array( $v, $allowed_pasts, true ) )    { $config['schemePast']    = $v; }
+		if ( in_array( $v, $allowed_pasts, true ) ) {
+			$config['schemePast'] = $v;
+		}
 		$v = sanitize_key( $raw['scheme_hover'] ?? '' );
-		if ( in_array( $v, $allowed_hovers, true ) )   { $config['schemeHover']   = $v; }
+		if ( in_array( $v, $allowed_hovers, true ) ) {
+			$config['schemeHover'] = $v;
+		}
 		$v = sanitize_key( $raw['scheme_today'] ?? '' );
-		if ( in_array( $v, $allowed_todays, true ) )   { $config['schemeToday']   = $v; }
+		if ( in_array( $v, $allowed_todays, true ) ) {
+			$config['schemeToday'] = $v;
+		}
 		$v = sanitize_key( $raw['scheme_nav'] ?? '' );
-		if ( in_array( $v, $allowed_navs, true ) )     { $config['schemeNav']     = $v; }
+		if ( in_array( $v, $allowed_navs, true ) ) {
+			$config['schemeNav'] = $v;
+		}
 	}
 
 	return $config;
@@ -381,11 +395,11 @@ add_shortcode( 'avail_calendar', 'bac_shortcode' );
 function bac_shortcode( $atts ): string {
 	$atts = shortcode_atts(
 		array(
-			'roomid'     => '',
-			'propid'     => '',
-			'nummonths'  => '5',
-			'startmonth' => '',
-			'startyear'  => '',
+			'roomid'         => '',
+			'propid'         => '',
+			'nummonths'      => '5',
+			'startmonth'     => '',
+			'startyear'      => '',
 			'lang'           => '',   // empty = auto-detect.
 			'scheme'         => 'solid',
 			'scheme_shape'   => '',

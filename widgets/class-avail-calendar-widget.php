@@ -691,14 +691,14 @@ class Avail_Calendar_Widget extends \Elementor\Widget_Base {
 			'startmonth'      => $s['startmonth'] ?? '',
 			'startyear'       => $s['startyear'] ?? '',
 			'lang'            => $s['lang'] ?? '',
-			'scheme'         => $s['scheme']         ?? 'solid',
-			'scheme_shape'   => $s['scheme_shape']   ?? '',
-			'scheme_avail'   => $s['scheme_avail']   ?? '',
-			'scheme_unavail' => $s['scheme_unavail'] ?? '',
-			'scheme_past'    => $s['scheme_past']    ?? '',
-			'scheme_hover'   => $s['scheme_hover']   ?? '',
-			'scheme_today'   => $s['scheme_today']   ?? '',
-			'scheme_nav'     => $s['scheme_nav']     ?? '',
+			'scheme'          => $s['scheme'] ?? 'solid',
+			'scheme_shape'    => $s['scheme_shape'] ?? '',
+			'scheme_avail'    => $s['scheme_avail'] ?? '',
+			'scheme_unavail'  => $s['scheme_unavail'] ?? '',
+			'scheme_past'     => $s['scheme_past'] ?? '',
+			'scheme_hover'    => $s['scheme_hover'] ?? '',
+			'scheme_today'    => $s['scheme_today'] ?? '',
+			'scheme_nav'      => $s['scheme_nav'] ?? '',
 		);
 
 		$config = bac_sanitize_config( $raw );
