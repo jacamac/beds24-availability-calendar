@@ -45,11 +45,13 @@
     --tile-size:      36px;
     --tile-gap:       4px;
     --month-gap:      28px;
+    --bac-pad:    24px;
+    --bac-pad-x:  16px;
 
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
     background: var(--cal-bg);
     color: var(--cal-text);
-    padding: 24px 16px;
+    padding: var(--bac-pad) var(--bac-pad-x);
     max-width: 1100px;
 }
 
@@ -144,6 +146,7 @@
     position: relative;
     overflow: hidden;
     user-select: none;
+    transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
 }
 
 /* Number sits above the ::before triangle overlay */
@@ -216,18 +219,313 @@
 
 /* Today ring */
 .bac-day.bac-today {
-    outline: 2.5px solid var(--cal-today-ring);
-    outline-offset: -2px;
+    box-shadow: inset 0 0 0 2.5px var(--cal-today-ring);
     font-weight: 700;
 }
 
-/* Bookable tile — pointer cursor + hover brightness */
+/* Bookable tile — pointer cursor */
 .bac-wrapper a:has(.bac-day.bac-available),
 .bac-wrapper a:has(.bac-day.bac-split-avail-pm) {
     display: contents;
 }
 
+/* ══════════════════════════════════════════════════════════
+   DISPLAY SCHEME SYSTEM
+   Data-attributes on .bac-wrapper drive all visual variants.
+   Applied by AvailCalendar JS via _applyScheme() on init.
+   Selectors use .bac-wrapper[attr] giving specificity (0,3,0),
+   intentionally above base tile rules (0,2,0) so presets win
+   and cascade order between same-specificity rules is relied on
+   for today > avail priority (today rules are listed last).
+   ══════════════════════════════════════════════════════════ */
+
+/* ─── Shape ─────────────────────────────────────────────── */
+
+.bac-wrapper[data-shape="square"] .bac-day { border-radius: 0; }
+.bac-wrapper[data-shape="circle"] .bac-day { border-radius: 50%; }
+
+/* rounded uses the default var(--tile-r), no override needed */
+
+/* ─── Available ─────────────────────────────────────────── */
+
+.bac-wrapper[data-avail="outline"] .bac-day.bac-available,
+.bac-wrapper[data-avail="outline"] .bac-day.bac-split-avail-pm {
+    background: transparent;
+    box-shadow: inset 0 0 0 2px var(--avail-bg);
+    color: var(--avail-bg);
+}
+
+.bac-wrapper[data-avail="ghost"] .bac-day.bac-available,
+.bac-wrapper[data-avail="ghost"] .bac-day.bac-split-avail-pm {
+    background: color-mix(in srgb, var(--avail-bg) 15%, transparent);
+    color: var(--avail-bg);
+}
+
+.bac-wrapper[data-avail="dot"] .bac-day.bac-available,
+.bac-wrapper[data-avail="dot"] .bac-day.bac-split-avail-pm {
+    background: transparent;
+    color: var(--cal-text);
+}
+
+.bac-wrapper[data-avail="dot"] .bac-day.bac-available::after,
+.bac-wrapper[data-avail="dot"] .bac-day.bac-split-avail-pm::after {
+    content: '';
+    position: absolute;
+    bottom: 4px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--avail-bg);
+    z-index: 3;
+}
+
+.bac-wrapper[data-avail="plain"] .bac-day.bac-available,
+.bac-wrapper[data-avail="plain"] .bac-day.bac-split-avail-pm {
+    background: transparent;
+    color: var(--cal-text);
+}
+
+/* ─── Unavailable ───────────────────────────────────────── */
+
+.bac-wrapper[data-unavail="outline"] .bac-day.bac-unavailable,
+.bac-wrapper[data-unavail="outline"] .bac-day.bac-split-avail-am {
+    background: transparent;
+    box-shadow: inset 0 0 0 2px var(--unavail-bg);
+    color: var(--unavail-bg);
+}
+
+.bac-wrapper[data-unavail="ghost"] .bac-day.bac-unavailable,
+.bac-wrapper[data-unavail="ghost"] .bac-day.bac-split-avail-am {
+    background: color-mix(in srgb, var(--unavail-bg) 15%, transparent);
+    color: var(--unavail-bg);
+}
+
+.bac-wrapper[data-unavail="dot"] .bac-day.bac-unavailable,
+.bac-wrapper[data-unavail="dot"] .bac-day.bac-split-avail-am {
+    background: transparent;
+    color: var(--cal-text);
+}
+
+.bac-wrapper[data-unavail="dot"] .bac-day.bac-unavailable::after,
+.bac-wrapper[data-unavail="dot"] .bac-day.bac-split-avail-am::after {
+    content: '';
+    position: absolute;
+    bottom: 4px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--unavail-bg);
+    z-index: 3;
+}
+
+.bac-wrapper[data-unavail="strikethrough"] .bac-day.bac-unavailable,
+.bac-wrapper[data-unavail="strikethrough"] .bac-day.bac-split-avail-am {
+    background: transparent;
+    color: var(--cal-muted);
+    text-decoration: line-through;
+}
+
+.bac-wrapper[data-unavail="dim"] .bac-day.bac-unavailable,
+.bac-wrapper[data-unavail="dim"] .bac-day.bac-split-avail-am {
+    background: transparent;
+    color: var(--cal-muted);
+}
+
+.bac-wrapper[data-unavail="hidden"] .bac-day.bac-unavailable,
+.bac-wrapper[data-unavail="hidden"] .bac-day.bac-split-avail-am {
+    visibility: hidden;
+}
+
+/* ─── Split tile visibility logic ───────────────────────────
+   Diagonal ::before triangle only renders when both avail AND
+   unavail use a filled area (fill or ghost). For all other
+   combos the split tiles degrade to plain avail / unavail tiles.
+─────────────────────────────────────────────────────────── */
+
+/* 1. Suppress ::before whenever a scheme is active */
+.bac-wrapper[data-avail] .bac-day.bac-split-avail-pm::before,
+.bac-wrapper[data-avail] .bac-day.bac-split-avail-am::before { display: none; }
+
+/* 2. Re-enable for fill+fill, fill+ghost, ghost+fill, ghost+ghost */
+.bac-wrapper[data-avail="fill"][data-unavail="fill"]   .bac-day.bac-split-avail-pm::before,
+.bac-wrapper[data-avail="fill"][data-unavail="fill"]   .bac-day.bac-split-avail-am::before,
+.bac-wrapper[data-avail="fill"][data-unavail="ghost"]  .bac-day.bac-split-avail-pm::before,
+.bac-wrapper[data-avail="fill"][data-unavail="ghost"]  .bac-day.bac-split-avail-am::before,
+.bac-wrapper[data-avail="ghost"][data-unavail="fill"]  .bac-day.bac-split-avail-pm::before,
+.bac-wrapper[data-avail="ghost"][data-unavail="fill"]  .bac-day.bac-split-avail-am::before,
+.bac-wrapper[data-avail="ghost"][data-unavail="ghost"] .bac-day.bac-split-avail-pm::before,
+.bac-wrapper[data-avail="ghost"][data-unavail="ghost"] .bac-day.bac-split-avail-am::before { display: block; }
+
+/* 3. Ghost triangle colours */
+.bac-wrapper[data-avail="fill"][data-unavail="ghost"]  .bac-day.bac-split-avail-pm::before,
+.bac-wrapper[data-avail="ghost"][data-unavail="ghost"] .bac-day.bac-split-avail-pm::before {
+    background: color-mix(in srgb, var(--unavail-bg) 15%, transparent);
+}
+
+.bac-wrapper[data-avail="ghost"][data-unavail="fill"]  .bac-day.bac-split-avail-am::before,
+.bac-wrapper[data-avail="ghost"][data-unavail="ghost"] .bac-day.bac-split-avail-am::before {
+    background: color-mix(in srgb, var(--avail-bg) 15%, transparent);
+}
+
+/* ─── Past days ─────────────────────────────────────────── */
+
+.bac-wrapper[data-past="hidden"] .bac-day.bac-past {
+    visibility: hidden;
+}
+
+/* Reset text colour so overlay rules start from a clean slate */
+.bac-wrapper[data-past="unavailable"] .bac-day.bac-past {
+    color: var(--cal-text);
+}
+
+.bac-wrapper[data-past="unavailable"][data-unavail="fill"] .bac-day.bac-past {
+    background: var(--unavail-bg);
+    color: var(--unavail-text);
+}
+
+.bac-wrapper[data-past="unavailable"][data-unavail="outline"] .bac-day.bac-past {
+    background: transparent;
+    box-shadow: inset 0 0 0 2px var(--unavail-bg);
+    color: var(--unavail-bg);
+}
+
+.bac-wrapper[data-past="unavailable"][data-unavail="ghost"] .bac-day.bac-past {
+    background: color-mix(in srgb, var(--unavail-bg) 15%, transparent);
+    color: var(--unavail-bg);
+}
+
+.bac-wrapper[data-past="unavailable"][data-unavail="dot"] .bac-day.bac-past::after {
+    content: '';
+    position: absolute;
+    bottom: 4px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--unavail-bg);
+    z-index: 3;
+}
+
+.bac-wrapper[data-past="unavailable"][data-unavail="strikethrough"] .bac-day.bac-past {
+    color: var(--cal-muted);
+    text-decoration: line-through;
+}
+
+.bac-wrapper[data-past="unavailable"][data-unavail="dim"] .bac-day.bac-past {
+    color: var(--cal-muted);
+}
+
+.bac-wrapper[data-past="unavailable"][data-unavail="hidden"] .bac-day.bac-past {
+    visibility: hidden;
+}
+
+/* ─── Hover ─────────────────────────────────────────────── */
+
+/* Default brighten — overridden by scheme hover rules below */
 .bac-wrapper a .bac-day.bac-available:hover,
 .bac-wrapper a .bac-day.bac-split-avail-pm:hover {
     filter: brightness(1.1);
+}
+
+.bac-wrapper[data-hover="fill"] a .bac-day.bac-available:hover,
+.bac-wrapper[data-hover="fill"] a .bac-day.bac-split-avail-pm:hover {
+    filter: none;
+    background: var(--avail-bg);
+    color: var(--avail-text);
+}
+
+.bac-wrapper[data-hover="outline"] a .bac-day.bac-available:hover,
+.bac-wrapper[data-hover="outline"] a .bac-day.bac-split-avail-pm:hover {
+    filter: none;
+    box-shadow: inset 0 0 0 2.5px var(--avail-bg);
+}
+
+.bac-wrapper[data-hover="scale"] a .bac-day.bac-available:hover,
+.bac-wrapper[data-hover="scale"] a .bac-day.bac-split-avail-pm:hover {
+    filter: none;
+    transform: scale(1.12);
+}
+
+.bac-wrapper[data-hover="lift"] a .bac-day.bac-available:hover,
+.bac-wrapper[data-hover="lift"] a .bac-day.bac-split-avail-pm:hover {
+    filter: none;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 14px rgb(0 0 0 / 22%);
+}
+
+/* ─── Today indicator ───────────────────────────────────────
+   ring-rect is the base style (box-shadow inset). Listed here
+   too so it wins over same-specificity avail/unavail rules
+   via cascade order (today rules are last in this file).
+─────────────────────────────────────────────────────────── */
+
+.bac-wrapper[data-today="ring-rect"] .bac-day.bac-today {
+    box-shadow: inset 0 0 0 2.5px var(--cal-today-ring);
+}
+
+.bac-wrapper[data-today="ring-circle"] .bac-day.bac-today {
+    box-shadow: none;
+    border: 2px solid var(--cal-today-ring);
+    border-radius: 50%;
+}
+
+.bac-wrapper[data-today="bold"] .bac-day.bac-today {
+    box-shadow: none;
+    font-weight: 800;
+    font-size: 15px;
+}
+
+.bac-wrapper[data-today="none"] .bac-day.bac-today {
+    box-shadow: none;
+    font-weight: 500;
+}
+
+/* ─── Nav: top-right ────────────────────────────────────── */
+
+.bac-wrapper[data-nav="top-right"] .bac-nav {
+    justify-content: flex-end;
+}
+
+.bac-wrapper[data-nav="top-right"] .bac-status {
+    order: -1;
+    margin-right: auto;
+}
+
+/* ─── Nav: split ────────────────────────────────────────── */
+
+.bac-wrapper[data-nav="split"] {
+    position: relative;
+}
+
+.bac-wrapper[data-nav="split"] .bac-nav {
+    position: absolute;
+    top: var(--bac-pad);
+    left: var(--bac-pad-x);
+    right: var(--bac-pad-x);
+    margin-bottom: 0;
+    justify-content: space-between;
+    pointer-events: none;
+    z-index: 2;
+}
+
+.bac-wrapper[data-nav="split"] .bac-nav button {
+    pointer-events: all;
+    border: none;
+    background: none;
+    font-size: 20px;
+    padding: 2px 8px;
+}
+
+.bac-wrapper[data-nav="split"] .bac-status {
+    display: none;
+}
+
+.bac-wrapper[data-nav="split"] .bac-strip {
+    padding-left: 44px;
+    padding-right: 44px;
 }

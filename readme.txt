@@ -4,7 +4,7 @@ Tags:               beds24, availability, calendar, booking, hotel, b&b
 Requires at least:  5.9
 Tested up to:       6.9
 Requires PHP:       7.4
-Stable tag:         1.5.2
+Stable tag:         1.6.0
 License:            GPLv2 or later
 License URI:        https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -60,6 +60,12 @@ Display a calendar for a whole property:
   availability data for 5 minutes and is cleared when the browser tab is closed.
 
 == Changelog ==
+
+= 1.6.0 =
+* Add display schemes: five named presets (Solid, Minimal, Outline, Soft, Dot) selectable from the Elementor Style tab or via the `scheme` shortcode attribute
+* Add seven display axes — day shape (rounded/square/circle), available style (fill/outline/ghost/dot/plain), unavailable style (fill/outline/ghost/dot/strikethrough/dim/hidden), past days (muted/same-as-unavailable/hidden), hover effect (brighten/fill/outline/scale/lift), today indicator (ring-rect/ring-circle/bold/none), nav arrows (split/top-left/top-right) — configurable individually via "Custom" scheme
+* Fix: today ring outline clipping in Chrome — replaced `outline` with `box-shadow: inset` throughout
+* Fix: Elementor color and border-radius controls now set CSS custom properties on the wrapper instead of direct element styles, so they work correctly with all display schemes
 
 = 1.5.2 =
 * Upgrade PHPCS ruleset from WordPress to WordPress-Extra for stricter escape, nonce, and SQL auditing

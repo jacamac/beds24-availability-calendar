@@ -3,7 +3,7 @@
  * Plugin Name:       Availability Calendar for Beds24
  * Plugin URI:        https://github.com/jacamac/availability-calendar-for-beds24
  * Description:       Displays a Beds24 room or property availability calendar via the [avail_calendar] shortcode and an Elementor widget.
- * Version:           1.5.2
+ * Version:           1.6.0
  * Requires at least: 5.9
  * Requires PHP:      7.4
  * Author:            Jacques Leisy
@@ -32,7 +32,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'BAC_VERSION', '1.5.2' );
+define( 'BAC_VERSION', '1.6.0' );
 define( 'BAC_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 define( 'BAC_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'BAC_DEFAULT_MONTHS_DESKTOP', 3 );
@@ -319,6 +319,49 @@ function bac_sanitize_config( array $raw ): array {
 
 	$config['lang'] = bac_resolve_lang( $raw['lang'] ?? '' );
 
+	$allowed_schemes  = array( 'solid', 'minimal', 'outline', 'soft', 'dot', 'custom' );
+	$scheme           = sanitize_key( $raw['scheme'] ?? 'solid' );
+	$config['scheme'] = in_array( $scheme, $allowed_schemes, true ) ? $scheme : 'solid';
+
+	if ( 'custom' === $config['scheme'] ) {
+		$allowed_shapes   = array( 'rounded', 'square', 'circle' );
+		$allowed_avails   = array( 'fill', 'outline', 'ghost', 'dot', 'plain' );
+		$allowed_unavails = array( 'fill', 'outline', 'ghost', 'dot', 'strikethrough', 'dim', 'hidden' );
+		$allowed_pasts    = array( 'muted', 'unavailable', 'hidden' );
+		$allowed_hovers   = array( 'brighten', 'fill', 'outline', 'scale', 'lift' );
+		$allowed_todays   = array( 'ring-rect', 'ring-circle', 'bold', 'none' );
+		$allowed_navs     = array( 'top-left', 'top-right', 'split' );
+
+		$v = sanitize_key( $raw['scheme_shape'] ?? '' );
+		if ( in_array( $v, $allowed_shapes, true ) ) {
+			$config['schemeShape'] = $v;
+		}
+		$v = sanitize_key( $raw['scheme_avail'] ?? '' );
+		if ( in_array( $v, $allowed_avails, true ) ) {
+			$config['schemeAvail'] = $v;
+		}
+		$v = sanitize_key( $raw['scheme_unavail'] ?? '' );
+		if ( in_array( $v, $allowed_unavails, true ) ) {
+			$config['schemeUnavail'] = $v;
+		}
+		$v = sanitize_key( $raw['scheme_past'] ?? '' );
+		if ( in_array( $v, $allowed_pasts, true ) ) {
+			$config['schemePast'] = $v;
+		}
+		$v = sanitize_key( $raw['scheme_hover'] ?? '' );
+		if ( in_array( $v, $allowed_hovers, true ) ) {
+			$config['schemeHover'] = $v;
+		}
+		$v = sanitize_key( $raw['scheme_today'] ?? '' );
+		if ( in_array( $v, $allowed_todays, true ) ) {
+			$config['schemeToday'] = $v;
+		}
+		$v = sanitize_key( $raw['scheme_nav'] ?? '' );
+		if ( in_array( $v, $allowed_navs, true ) ) {
+			$config['schemeNav'] = $v;
+		}
+	}
+
 	return $config;
 }
 
@@ -352,12 +395,20 @@ add_shortcode( 'avail_calendar', 'bac_shortcode' );
 function bac_shortcode( $atts ): string {
 	$atts = shortcode_atts(
 		array(
-			'roomid'     => '',
-			'propid'     => '',
-			'nummonths'  => '5',
-			'startmonth' => '',
-			'startyear'  => '',
-			'lang'       => '',   // empty = auto-detect.
+			'roomid'         => '',
+			'propid'         => '',
+			'nummonths'      => '5',
+			'startmonth'     => '',
+			'startyear'      => '',
+			'lang'           => '',   // empty = auto-detect.
+			'scheme'         => 'solid',
+			'scheme_shape'   => '',
+			'scheme_avail'   => '',
+			'scheme_unavail' => '',
+			'scheme_past'    => '',
+			'scheme_hover'   => '',
+			'scheme_today'   => '',
+			'scheme_nav'     => '',
 		),
 		$atts,
 		'avail_calendar'
