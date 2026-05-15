@@ -111,6 +111,70 @@ The `AvailCalendar` class can also be used outside WordPress:
 
 ---
 
+## CI/CD Pipeline
+
+```mermaid
+flowchart TD
+
+%% ============================
+%% SECTION: PR -> main (CI)
+%% ============================
+
+subgraph CI[Pull Request -> main]
+    direction LR
+
+    A1[PHPCS<br/>WordPress Coding Standards]:::job
+    A2[PHPStan<br/>Static Analysis]:::job
+    A3[ESLint & Stylelint<br/>JS/CSS Linting]:::job
+
+    A1 --> A4[All checks must pass]:::result
+    A2 --> A4
+    A3 --> A4
+end
+
+
+%% ============================
+%% SECTION: development branch
+%% ============================
+
+subgraph DEV[Push -> development - Dev Release]
+    direction TB
+
+    B1[Lint Job<br/>PHPCS • PHPStan • Composer Audit • ESLint/Stylelint]:::job
+    B2[Build Dev ZIP<br/>Clean rsync build]:::job
+    B3[Update GitHub Pre-Release<br/>tag: dev-latest]:::result
+
+    B1 --> B2 --> B3
+end
+
+
+%% ============================
+%% SECTION: production release
+%% ============================
+
+subgraph REL[Push Tag vX.Y.Z - Production Release]
+    direction TB
+
+    C1[Build Production ZIP<br/>Clean rsync • composer --no-dev<br/>Inject version]:::job
+    C2[Smoke Test ZIP<br/>unzip • php -l • grep headers]:::job
+    C3[Publish GitHub Release<br/>Upload ZIP + notes]:::result
+
+    C1 --> C2 --> C3
+end
+
+
+%% ============================
+%% STYLES
+%% ============================
+
+classDef job fill:#eef,stroke:#447,stroke-width:1px,color:#000;
+classDef result fill:#efe,stroke:#484,stroke-width:1px,color:#000;
+```
+
+
+
+---
+
 ## Privacy
 
 - Availability data is fetched **directly in the visitor's browser** from `media.xmlcal.com`. No data passes through your WordPress server.
