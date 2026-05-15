@@ -223,15 +223,10 @@
     font-weight: 700;
 }
 
-/* Bookable tile — pointer cursor + hover brightness */
+/* Bookable tile — pointer cursor */
 .bac-wrapper a:has(.bac-day.bac-available),
 .bac-wrapper a:has(.bac-day.bac-split-avail-pm) {
     display: contents;
-}
-
-.bac-wrapper a .bac-day.bac-available:hover,
-.bac-wrapper a .bac-day.bac-split-avail-pm:hover {
-    filter: brightness(1.1);
 }
 
 /* ══════════════════════════════════════════════════════════
@@ -248,6 +243,7 @@
 
 .bac-wrapper[data-shape="square"] .bac-day { border-radius: 0; }
 .bac-wrapper[data-shape="circle"] .bac-day { border-radius: 50%; }
+
 /* rounded uses the default var(--tile-r), no override needed */
 
 /* ─── Available ─────────────────────────────────────────── */
@@ -270,6 +266,7 @@
     background: transparent;
     color: var(--cal-text);
 }
+
 .bac-wrapper[data-avail="dot"] .bac-day.bac-available::after,
 .bac-wrapper[data-avail="dot"] .bac-day.bac-split-avail-pm::after {
     content: '';
@@ -310,6 +307,7 @@
     background: transparent;
     color: var(--cal-text);
 }
+
 .bac-wrapper[data-unavail="dot"] .bac-day.bac-unavailable::after,
 .bac-wrapper[data-unavail="dot"] .bac-day.bac-split-avail-am::after {
     content: '';
@@ -367,6 +365,7 @@
 .bac-wrapper[data-avail="ghost"][data-unavail="ghost"] .bac-day.bac-split-avail-pm::before {
     background: color-mix(in srgb, var(--unavail-bg) 15%, transparent);
 }
+
 .bac-wrapper[data-avail="ghost"][data-unavail="fill"]  .bac-day.bac-split-avail-am::before,
 .bac-wrapper[data-avail="ghost"][data-unavail="ghost"] .bac-day.bac-split-avail-am::before {
     background: color-mix(in srgb, var(--avail-bg) 15%, transparent);
@@ -374,23 +373,31 @@
 
 /* ─── Past days ─────────────────────────────────────────── */
 
+.bac-wrapper[data-past="hidden"] .bac-day.bac-past {
+    visibility: hidden;
+}
+
 /* Reset text colour so overlay rules start from a clean slate */
 .bac-wrapper[data-past="unavailable"] .bac-day.bac-past {
     color: var(--cal-text);
 }
+
 .bac-wrapper[data-past="unavailable"][data-unavail="fill"] .bac-day.bac-past {
     background: var(--unavail-bg);
     color: var(--unavail-text);
 }
+
 .bac-wrapper[data-past="unavailable"][data-unavail="outline"] .bac-day.bac-past {
     background: transparent;
     box-shadow: inset 0 0 0 2px var(--unavail-bg);
     color: var(--unavail-bg);
 }
+
 .bac-wrapper[data-past="unavailable"][data-unavail="ghost"] .bac-day.bac-past {
     background: color-mix(in srgb, var(--unavail-bg) 15%, transparent);
     color: var(--unavail-bg);
 }
+
 .bac-wrapper[data-past="unavailable"][data-unavail="dot"] .bac-day.bac-past::after {
     content: '';
     position: absolute;
@@ -403,22 +410,27 @@
     background: var(--unavail-bg);
     z-index: 3;
 }
+
 .bac-wrapper[data-past="unavailable"][data-unavail="strikethrough"] .bac-day.bac-past {
     color: var(--cal-muted);
     text-decoration: line-through;
 }
+
 .bac-wrapper[data-past="unavailable"][data-unavail="dim"] .bac-day.bac-past {
     color: var(--cal-muted);
 }
+
 .bac-wrapper[data-past="unavailable"][data-unavail="hidden"] .bac-day.bac-past {
     visibility: hidden;
 }
 
-.bac-wrapper[data-past="hidden"] .bac-day.bac-past {
-    visibility: hidden;
-}
-
 /* ─── Hover ─────────────────────────────────────────────── */
+
+/* Default brighten — overridden by scheme hover rules below */
+.bac-wrapper a .bac-day.bac-available:hover,
+.bac-wrapper a .bac-day.bac-split-avail-pm:hover {
+    filter: brightness(1.1);
+}
 
 .bac-wrapper[data-hover="fill"] a .bac-day.bac-available:hover,
 .bac-wrapper[data-hover="fill"] a .bac-day.bac-split-avail-pm:hover {
@@ -478,6 +490,7 @@
 .bac-wrapper[data-nav="top-right"] .bac-nav {
     justify-content: flex-end;
 }
+
 .bac-wrapper[data-nav="top-right"] .bac-status {
     order: -1;
     margin-right: auto;
@@ -488,6 +501,7 @@
 .bac-wrapper[data-nav="split"] {
     position: relative;
 }
+
 .bac-wrapper[data-nav="split"] .bac-nav {
     position: absolute;
     top: var(--bac-pad);
@@ -498,6 +512,7 @@
     pointer-events: none;
     z-index: 2;
 }
+
 .bac-wrapper[data-nav="split"] .bac-nav button {
     pointer-events: all;
     border: none;
@@ -505,9 +520,11 @@
     font-size: 20px;
     padding: 2px 8px;
 }
+
 .bac-wrapper[data-nav="split"] .bac-status {
     display: none;
 }
+
 .bac-wrapper[data-nav="split"] .bac-strip {
     padding-left: 44px;
     padding-right: 44px;
