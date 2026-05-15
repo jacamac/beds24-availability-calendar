@@ -23,6 +23,13 @@ jobs:
           php-version: '8.1'
           tools: composer
 
+      - name: Cache Composer dependencies
+        uses: actions/cache@v4
+        with:
+          path: vendor
+          key: ${{ runner.os }}-composer-${{ hashFiles('composer.lock') }}
+          restore-keys: ${{ runner.os }}-composer-
+
       - name: Get version from tag
         id: version
         run: echo "VERSION=${GITHUB_REF_NAME#v}" >> $GITHUB_OUTPUT
@@ -39,9 +46,14 @@ jobs:
             --exclude='.gitignore' \
             --exclude='.DS_Store' \
             --exclude='.claude' \
+            --exclude='.stylelintrc.json' \
             --exclude='CLAUDE.md' \
             --exclude='ELEMENTOR_WIDGET_GUIDE.md' \
             --exclude='README.md' \
+            --exclude='eslint.config.js' \
+            --exclude='package.json' \
+            --exclude='package-lock.json' \
+            --exclude='node_modules' \
             --exclude='phpcs.xml' \
             --exclude='phpstan.neon' \
             --exclude='vendor' \
@@ -69,6 +81,15 @@ jobs:
           cd /tmp/build
           zip -r availability-calendar-for-beds24-${{ steps.version.outputs.VERSION }}.zip \
             availability-calendar-for-beds24/
+
+      - name: Smoke-test built ZIP
+        run: |
+          unzip -q /tmp/build/availability-calendar-for-beds24-${{ steps.version.outputs.VERSION }}.zip \
+            -d /tmp/smoke
+          php -l /tmp/smoke/availability-calendar-for-beds24/availability-calendar-for-beds24.php
+          grep -q "Plugin Name:" /tmp/smoke/availability-calendar-for-beds24/availability-calendar-for-beds24.php
+          grep -q "Version:" /tmp/smoke/availability-calendar-for-beds24/availability-calendar-for-beds24.php
+          echo "Smoke test passed"
 
       - name: Generate release notes from readme.txt
         run: |

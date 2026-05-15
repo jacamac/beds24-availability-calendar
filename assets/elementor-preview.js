@@ -44,7 +44,7 @@
 			var cfg;
 			try {
 				cfg = JSON.parse( $wrapper.attr( 'data-bac-cfg' ) || '{}' );
-			} catch ( e ) {
+			} catch ( _ ) {
 				cfg = {};
 			}
 
