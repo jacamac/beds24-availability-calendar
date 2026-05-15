@@ -24,7 +24,14 @@ jobs:
           php-version: '8.1'
           tools: composer, cs2pr
 
-      - name: Install dependencies
+      - name: Cache Composer dependencies
+        uses: actions/cache@v4
+        with:
+          path: vendor
+          key: ${{ runner.os }}-composer-${{ hashFiles('composer.lock') }}
+          restore-keys: ${{ runner.os }}-composer-
+
+      - name: Install PHP dependencies
         run: composer install --prefer-dist --no-progress
 
       - name: PHPCS
@@ -35,6 +42,17 @@ jobs:
 
       - name: Audit dependencies for known CVEs
         run: composer audit
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install Node dependencies
+        run: npm ci
+
+      - name: JS & CSS lint
+        run: npm run lint
 
   release:
     name: Build & Publish dev-latest
@@ -58,9 +76,14 @@ jobs:
             --exclude='.gitignore' \
             --exclude='.DS_Store' \
             --exclude='.claude' \
+            --exclude='.stylelintrc.json' \
             --exclude='CLAUDE.md' \
             --exclude='ELEMENTOR_WIDGET_GUIDE.md' \
             --exclude='README.md' \
+            --exclude='eslint.config.js' \
+            --exclude='package.json' \
+            --exclude='package-lock.json' \
+            --exclude='node_modules' \
             --exclude='phpcs.xml' \
             --exclude='phpstan.neon' \
             --exclude='vendor' \

@@ -30,19 +30,17 @@
 
 /* ── CSS custom properties (light mode) ── */
 .bac-wrapper {
-    --cal-bg:         #ffffff;
+    --cal-bg:         #fff;
     --cal-text:       #1a1a1a;
-    --cal-muted:      #cccccc;
+    --cal-muted:      #ccc;
     --cal-header:     #1a1a1a;
-    --cal-dow:        #999999;
+    --cal-dow:        #999;
     --cal-nav-hover:  #f0f0f0;
     --cal-today-ring: #1a1a1a;
-
     --avail-bg:       #34a853;
-    --avail-text:     #ffffff;
+    --avail-text:     #fff;
     --unavail-bg:     #ea4335;
-    --unavail-text:   #ffffff;
-
+    --unavail-text:   #fff;
     --tile-r:         7px;
     --tile-size:      36px;
     --tile-gap:       4px;
@@ -65,7 +63,7 @@
 
 .bac-nav button {
     background: none;
-    border: 1px solid rgba(128, 128, 128, 0.25);
+    border: 1px solid rgb(128 128 128 / 25%);
     border-radius: 6px;
     padding: 5px 11px;
     cursor: pointer;

@@ -5,6 +5,9 @@ ELEMENTOR_WIDGET_GUIDE.md
 # Composer dependencies — vendor/ excluded; lock file committed for reproducible CI builds
 vendor/
 
+# Node.js dependencies — node_modules/ excluded; lock file committed for reproducible CI builds
+node_modules/
+
 # IDE
 .vscode/
 .idea/
