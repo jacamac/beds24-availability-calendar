@@ -229,6 +229,150 @@ class Avail_Calendar_Widget extends \Elementor\Widget_Base {
 			══════════════════════════════════════════════════════
 		*/
 
+		/* ── Section: Display Scheme ── */
+		$this->start_controls_section(
+			'section_scheme',
+			array(
+				'label' => esc_html__( 'Display Scheme', 'availability-calendar-for-beds24' ),
+				'tab'   => \Elementor\Controls_Manager::TAB_STYLE,
+			)
+		);
+
+		$this->add_control(
+			'scheme',
+			array(
+				'label'   => esc_html__( 'Scheme', 'availability-calendar-for-beds24' ),
+				'type'    => \Elementor\Controls_Manager::SELECT,
+				'default' => 'solid',
+				'options' => array(
+					'solid'   => esc_html__( 'Solid', 'availability-calendar-for-beds24' ),
+					'minimal' => esc_html__( 'Minimal', 'availability-calendar-for-beds24' ),
+					'outline' => esc_html__( 'Outline', 'availability-calendar-for-beds24' ),
+					'soft'    => esc_html__( 'Soft', 'availability-calendar-for-beds24' ),
+					'dot'     => esc_html__( 'Dot', 'availability-calendar-for-beds24' ),
+					'custom'  => esc_html__( 'Custom', 'availability-calendar-for-beds24' ),
+				),
+			)
+		);
+
+		$custom = array( 'scheme' => 'custom' );
+
+		$this->add_control(
+			'scheme_shape',
+			array(
+				'label'     => esc_html__( 'Day Shape', 'availability-calendar-for-beds24' ),
+				'type'      => \Elementor\Controls_Manager::SELECT,
+				'default'   => 'rounded',
+				'condition' => $custom,
+				'options'   => array(
+					'rounded' => esc_html__( 'Rounded', 'availability-calendar-for-beds24' ),
+					'square'  => esc_html__( 'Square', 'availability-calendar-for-beds24' ),
+					'circle'  => esc_html__( 'Circle', 'availability-calendar-for-beds24' ),
+				),
+			)
+		);
+
+		$this->add_control(
+			'scheme_avail',
+			array(
+				'label'     => esc_html__( 'Available Style', 'availability-calendar-for-beds24' ),
+				'type'      => \Elementor\Controls_Manager::SELECT,
+				'default'   => 'fill',
+				'condition' => $custom,
+				'options'   => array(
+					'fill'    => esc_html__( 'Fill', 'availability-calendar-for-beds24' ),
+					'outline' => esc_html__( 'Outline', 'availability-calendar-for-beds24' ),
+					'ghost'   => esc_html__( 'Ghost', 'availability-calendar-for-beds24' ),
+					'dot'     => esc_html__( 'Dot', 'availability-calendar-for-beds24' ),
+					'plain'   => esc_html__( 'Plain', 'availability-calendar-for-beds24' ),
+				),
+			)
+		);
+
+		$this->add_control(
+			'scheme_unavail',
+			array(
+				'label'     => esc_html__( 'Unavailable Style', 'availability-calendar-for-beds24' ),
+				'type'      => \Elementor\Controls_Manager::SELECT,
+				'default'   => 'fill',
+				'condition' => $custom,
+				'options'   => array(
+					'fill'          => esc_html__( 'Fill', 'availability-calendar-for-beds24' ),
+					'outline'       => esc_html__( 'Outline', 'availability-calendar-for-beds24' ),
+					'ghost'         => esc_html__( 'Ghost', 'availability-calendar-for-beds24' ),
+					'dot'           => esc_html__( 'Dot', 'availability-calendar-for-beds24' ),
+					'strikethrough' => esc_html__( 'Strikethrough', 'availability-calendar-for-beds24' ),
+					'dim'           => esc_html__( 'Dim', 'availability-calendar-for-beds24' ),
+					'hidden'        => esc_html__( 'Hidden', 'availability-calendar-for-beds24' ),
+				),
+			)
+		);
+
+		$this->add_control(
+			'scheme_past',
+			array(
+				'label'     => esc_html__( 'Past Days', 'availability-calendar-for-beds24' ),
+				'type'      => \Elementor\Controls_Manager::SELECT,
+				'default'   => 'muted',
+				'condition' => $custom,
+				'options'   => array(
+					'muted'       => esc_html__( 'Muted', 'availability-calendar-for-beds24' ),
+					'unavailable' => esc_html__( 'Same as unavailable', 'availability-calendar-for-beds24' ),
+					'hidden'      => esc_html__( 'Hidden', 'availability-calendar-for-beds24' ),
+				),
+			)
+		);
+
+		$this->add_control(
+			'scheme_hover',
+			array(
+				'label'     => esc_html__( 'Hover Effect', 'availability-calendar-for-beds24' ),
+				'type'      => \Elementor\Controls_Manager::SELECT,
+				'default'   => 'brighten',
+				'condition' => $custom,
+				'options'   => array(
+					'brighten' => esc_html__( 'Brighten', 'availability-calendar-for-beds24' ),
+					'fill'     => esc_html__( 'Fill', 'availability-calendar-for-beds24' ),
+					'outline'  => esc_html__( 'Outline', 'availability-calendar-for-beds24' ),
+					'scale'    => esc_html__( 'Scale', 'availability-calendar-for-beds24' ),
+					'lift'     => esc_html__( 'Lift', 'availability-calendar-for-beds24' ),
+				),
+			)
+		);
+
+		$this->add_control(
+			'scheme_today',
+			array(
+				'label'     => esc_html__( 'Today Indicator', 'availability-calendar-for-beds24' ),
+				'type'      => \Elementor\Controls_Manager::SELECT,
+				'default'   => 'ring-rect',
+				'condition' => $custom,
+				'options'   => array(
+					'ring-rect'   => esc_html__( 'Ring (rounded)', 'availability-calendar-for-beds24' ),
+					'ring-circle' => esc_html__( 'Ring (circle)', 'availability-calendar-for-beds24' ),
+					'bold'        => esc_html__( 'Bold text', 'availability-calendar-for-beds24' ),
+					'none'        => esc_html__( 'None', 'availability-calendar-for-beds24' ),
+				),
+			)
+		);
+
+		$this->add_control(
+			'scheme_nav',
+			array(
+				'label'     => esc_html__( 'Nav Arrows', 'availability-calendar-for-beds24' ),
+				'type'      => \Elementor\Controls_Manager::SELECT,
+				'default'   => 'split',
+				'condition' => $custom,
+				'options'   => array(
+					'split'     => esc_html__( 'Split (flanking months)', 'availability-calendar-for-beds24' ),
+					'top-left'  => esc_html__( 'Top left', 'availability-calendar-for-beds24' ),
+					'top-right' => esc_html__( 'Top right', 'availability-calendar-for-beds24' ),
+				),
+			)
+		);
+
+		$this->end_controls_section();
+
 		/* ── Section: Colors ── */
 		$this->start_controls_section(
 			'section_style_colors',
@@ -253,9 +397,7 @@ class Avail_Calendar_Widget extends \Elementor\Widget_Base {
 				'type'      => \Elementor\Controls_Manager::COLOR,
 				'default'   => '#34a853',
 				'selectors' => array(
-					'{{WRAPPER}} .bac-day.bac-available' => 'background: {{VALUE}};',
-					'{{WRAPPER}} .bac-day.bac-split-avail-am::before' => 'background: {{VALUE}};',
-					'{{WRAPPER}} .bac-day.bac-split-avail-pm' => 'background: {{VALUE}};',
+					'{{WRAPPER}} .bac-wrapper' => '--avail-bg: {{VALUE}};',
 				),
 			)
 		);
@@ -267,9 +409,7 @@ class Avail_Calendar_Widget extends \Elementor\Widget_Base {
 				'type'      => \Elementor\Controls_Manager::COLOR,
 				'default'   => '#ea4335',
 				'selectors' => array(
-					'{{WRAPPER}} .bac-day.bac-unavailable' => 'background: {{VALUE}};',
-					'{{WRAPPER}} .bac-day.bac-split-avail-am' => 'background: {{VALUE}};',
-					'{{WRAPPER}} .bac-day.bac-split-avail-pm::before' => 'background: {{VALUE}};',
+					'{{WRAPPER}} .bac-wrapper' => '--unavail-bg: {{VALUE}};',
 				),
 			)
 		);
@@ -352,7 +492,7 @@ class Avail_Calendar_Widget extends \Elementor\Widget_Base {
 				'type'      => \Elementor\Controls_Manager::COLOR,
 				'default'   => '#1a1a1a',
 				'selectors' => array(
-					'{{WRAPPER}} .bac-day.bac-today' => 'outline-color: {{VALUE}};',
+					'{{WRAPPER}} .bac-wrapper' => '--cal-today-ring: {{VALUE}};',
 				),
 			)
 		);
@@ -440,7 +580,7 @@ class Avail_Calendar_Widget extends \Elementor\Widget_Base {
 					'size' => 7,
 				),
 				'selectors'  => array(
-					'{{WRAPPER}} .bac-day' => 'border-radius: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}} .bac-wrapper' => '--tile-r: {{SIZE}}{{UNIT}};',
 				),
 			)
 		);
@@ -551,6 +691,14 @@ class Avail_Calendar_Widget extends \Elementor\Widget_Base {
 			'startmonth'      => $s['startmonth'] ?? '',
 			'startyear'       => $s['startyear'] ?? '',
 			'lang'            => $s['lang'] ?? '',
+			'scheme'         => $s['scheme']         ?? 'solid',
+			'scheme_shape'   => $s['scheme_shape']   ?? '',
+			'scheme_avail'   => $s['scheme_avail']   ?? '',
+			'scheme_unavail' => $s['scheme_unavail'] ?? '',
+			'scheme_past'    => $s['scheme_past']    ?? '',
+			'scheme_hover'   => $s['scheme_hover']   ?? '',
+			'scheme_today'   => $s['scheme_today']   ?? '',
+			'scheme_nav'     => $s['scheme_nav']     ?? '',
 		);
 
 		$config = bac_sanitize_config( $raw );
@@ -615,6 +763,14 @@ class Avail_Calendar_Widget extends \Elementor\Widget_Base {
 			startMonth:      parseInt( settings.startmonth, 10 ) > 0 ? parseInt( settings.startmonth, 10 ) : null,
 			startYear:       parseInt( settings.startyear,   10 ) > 0 ? parseInt( settings.startyear,   10 ) : null,
 			lang:            _bacPlain( 'lang' ) || 'en',
+			scheme:       _bacPlain( 'scheme' ) || 'solid',
+			schemeShape:  _bacPlain( 'scheme_shape' ),
+			schemeAvail:  _bacPlain( 'scheme_avail' ),
+			schemeUnavail:_bacPlain( 'scheme_unavail' ),
+			schemePast:   _bacPlain( 'scheme_past' ),
+			schemeHover:  _bacPlain( 'scheme_hover' ),
+			schemeToday:  _bacPlain( 'scheme_today' ),
+			schemeNav:    _bacPlain( 'scheme_nav' ),
 		} );
 		#>
 		<div id="{{ containerId }}" class="bac-wrapper" data-bac-cfg='{{{ bacCfg }}}'></div>

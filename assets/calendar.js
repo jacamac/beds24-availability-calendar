@@ -44,6 +44,14 @@ class AvailCalendar {
             startMonth:     null,
             startYear:      null,
             lang:           'en',
+            scheme:        'solid',
+            schemeShape:   null,
+            schemeAvail:   null,
+            schemeUnavail: null,
+            schemePast:    null,
+            schemeHover:   null,
+            schemeToday:   null,
+            schemeNav:     null,
         }, config);
 
         this.container = document.getElementById(this.cfg.containerId);
@@ -120,6 +128,43 @@ class AvailCalendar {
             if (e.key === 'ArrowLeft')  this._shift(-1);
             if (e.key === 'ArrowRight') this._shift(+1);
         });
+
+        this._applyScheme();
+    }
+
+    /* ─── Scheme resolution ───────────────────────────────── */
+    _resolveScheme() {
+        const PRESETS = {
+            solid:   { shape: 'rounded', avail: 'fill',    unavail: 'fill',          past: 'muted',  hover: 'brighten', today: 'ring-rect',   nav: 'split'    },
+            minimal: { shape: 'rounded', avail: 'plain',   unavail: 'strikethrough', past: 'hidden', hover: 'fill',     today: 'ring-circle', nav: 'split'    },
+            outline: { shape: 'rounded', avail: 'outline', unavail: 'dim',           past: 'muted',  hover: 'fill',     today: 'ring-circle', nav: 'split'    },
+            soft:    { shape: 'rounded', avail: 'ghost',   unavail: 'ghost',         past: 'muted',  hover: 'fill',     today: 'ring-circle', nav: 'split'    },
+            dot:     { shape: 'circle',  avail: 'dot',     unavail: 'dot',           past: 'hidden', hover: 'scale',    today: 'bold',        nav: 'split'    },
+        };
+        if (this.cfg.scheme === 'custom') {
+            return {
+                shape:   this.cfg.schemeShape   || 'rounded',
+                avail:   this.cfg.schemeAvail   || 'fill',
+                unavail: this.cfg.schemeUnavail || 'fill',
+                past:    this.cfg.schemePast    || 'muted',
+                hover:   this.cfg.schemeHover   || 'brighten',
+                today:   this.cfg.schemeToday   || 'ring-rect',
+                nav:     this.cfg.schemeNav     || 'split',
+            };
+        }
+        return PRESETS[this.cfg.scheme] || PRESETS.solid;
+    }
+
+    _applyScheme() {
+        const s = this._resolveScheme();
+        const d = this.container.dataset;
+        d.shape   = s.shape;
+        d.avail   = s.avail;
+        d.unavail = s.unavail;
+        d.past    = s.past;
+        d.hover   = s.hover;
+        d.today   = s.today;
+        d.nav     = s.nav;
     }
 
     /* ─── Responsive numMonths ───────────────────────────────── */

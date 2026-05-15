@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AvailCalendar — Scheme Tester</title>
+  <link rel="stylesheet" href="assets/calendar.css">
+  <style>
+
+    *, *::before, *::after { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      background: #f5f5f7;
+      color: #1a1a1a;
+    }
+
+    /* ── Control panel ── */
+    #panel {
+      background: #fff;
+      border-bottom: 1px solid #e0e0e0;
+      padding: 16px 24px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      align-items: flex-end;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .ctrl-group {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .ctrl-label {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: #888;
+    }
+
+    select {
+      font-size: 13px;
+      padding: 6px 10px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      background: #fff;
+      cursor: pointer;
+      min-width: 150px;
+      color: #1a1a1a;
+    }
+
+    select:focus {
+      outline: 2px solid #3b82f6;
+      outline-offset: 1px;
+    }
+
+    /* ── Preset chips ── */
+    .presets-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .preset-chips {
+      display: flex;
+      gap: 6px;
+    }
+
+    .chip {
+      font-size: 12px;
+      font-weight: 600;
+      padding: 5px 16px;
+      border: 1.5px solid #ddd;
+      border-radius: 20px;
+      background: #fff;
+      cursor: pointer;
+      color: #555;
+      transition: all 0.12s;
+    }
+
+    .chip:hover { border-color: #aaa; color: #1a1a1a; }
+
+    .chip.active {
+      background: #1a1a1a;
+      border-color: #1a1a1a;
+      color: #fff;
+    }
+
+    /* ── Divider ── */
+    .divider {
+      width: 1px;
+      background: #e5e5e5;
+      align-self: stretch;
+    }
+
+    /* ── Calendar preview area ── */
+    #cal-area {
+      padding: 40px 32px;
+      max-width: 1060px;
+      margin: 0 auto;
+    }
+
+    #bac-test {
+      background: #fff;
+      border-radius: 14px;
+      box-shadow: 0 2px 12px rgb(0 0 0 / 8%), 0 0 0 1px rgb(0 0 0 / 4%);
+    }
+
+  </style>
+</head>
+<body>
+
+<div id="panel">
+
+  <div class="presets-wrap">
+    <div class="ctrl-label">Scheme preset</div>
+    <div class="preset-chips">
+      <button class="chip" data-preset="solid">Solid</button>
+      <button class="chip" data-preset="minimal">Minimal</button>
+      <button class="chip" data-preset="outline">Outline</button>
+      <button class="chip" data-preset="soft">Soft</button>
+      <button class="chip" data-preset="dot">Dot</button>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="ctrl-group">
+    <div class="ctrl-label">Day shape</div>
+    <select id="sel-shape">
+      <option value="rounded">Rounded</option>
+      <option value="square">Square</option>
+      <option value="circle">Circle</option>
+    </select>
+  </div>
+
+  <div class="ctrl-group">
+    <div class="ctrl-label">Available</div>
+    <select id="sel-avail">
+      <option value="fill">Fill</option>
+      <option value="outline">Outline</option>
+      <option value="ghost">Ghost</option>
+      <option value="dot">Dot</option>
+      <option value="plain">Plain</option>
+    </select>
+  </div>
+
+  <div class="ctrl-group">
+    <div class="ctrl-label">Unavailable</div>
+    <select id="sel-unavail">
+      <option value="fill">Fill</option>
+      <option value="outline">Outline</option>
+      <option value="ghost">Ghost</option>
+      <option value="dot">Dot</option>
+      <option value="strikethrough">Strikethrough</option>
+      <option value="dim">Dim</option>
+      <option value="hidden">Hidden</option>
+    </select>
+  </div>
+
+  <div class="ctrl-group">
+    <div class="ctrl-label">Past days</div>
+    <select id="sel-past">
+      <option value="muted">Muted</option>
+      <option value="unavailable">Same as unavailable</option>
+      <option value="hidden">Hidden</option>
+    </select>
+  </div>
+
+  <div class="ctrl-group">
+    <div class="ctrl-label">Hover</div>
+    <select id="sel-hover">
+      <option value="brighten">Brighten</option>
+      <option value="fill">Fill</option>
+      <option value="outline">Outline</option>
+      <option value="scale">Scale</option>
+      <option value="lift">Lift</option>
+    </select>
+  </div>
+
+  <div class="ctrl-group">
+    <div class="ctrl-label">Today</div>
+    <select id="sel-today">
+      <option value="ring-rect">Ring (rect)</option>
+      <option value="ring-circle">Ring (circle)</option>
+      <option value="bold">Bold</option>
+      <option value="none">None</option>
+    </select>
+  </div>
+
+  <div class="ctrl-group">
+    <div class="ctrl-label">Nav arrows</div>
+    <select id="sel-nav">
+      <option value="top-left">Top left</option>
+      <option value="top-right">Top right</option>
+      <option value="split">Split</option>
+    </select>
+  </div>
+
+</div><!-- /#panel -->
+
+<div id="cal-area">
+  <div id="bac-test" class="bac-wrapper"></div>
+</div>
+
+<script src="assets/calendar.js"></script>
+<script>
+
+  const SCHEMES = {
+    solid:   { shape: 'rounded', avail: 'fill',    unavail: 'fill',          past: 'muted',  hover: 'brighten', today: 'ring-rect',   nav: 'split'    },
+    minimal: { shape: 'rounded', avail: 'plain',   unavail: 'strikethrough', past: 'hidden', hover: 'fill',     today: 'ring-circle', nav: 'split'    },
+    outline: { shape: 'rounded', avail: 'outline', unavail: 'dim',           past: 'muted',  hover: 'fill',     today: 'ring-circle', nav: 'split'    },
+    soft:    { shape: 'rounded', avail: 'ghost',   unavail: 'ghost',         past: 'muted',  hover: 'fill',     today: 'ring-circle', nav: 'split'    },
+    dot:     { shape: 'circle',  avail: 'dot',     unavail: 'dot',           past: 'hidden', hover: 'scale',    today: 'bold',        nav: 'split'    },
+  };
+
+  new AvailCalendar({ containerId: 'bac-test', numMonths: 2, lang: 'fr' });
+
+  const wrapper  = document.getElementById('bac-test');
+  const chips    = document.querySelectorAll('.chip');
+  const controls = {
+    shape:   document.getElementById('sel-shape'),
+    avail:   document.getElementById('sel-avail'),
+    unavail: document.getElementById('sel-unavail'),
+    past:    document.getElementById('sel-past'),
+    hover:   document.getElementById('sel-hover'),
+    today:   document.getElementById('sel-today'),
+    nav:     document.getElementById('sel-nav'),
+  };
+
+  function apply() {
+    wrapper.dataset.shape   = controls.shape.value;
+    wrapper.dataset.avail   = controls.avail.value;
+    wrapper.dataset.unavail = controls.unavail.value;
+    wrapper.dataset.past    = controls.past.value;
+    wrapper.dataset.hover   = controls.hover.value;
+    wrapper.dataset.today   = controls.today.value;
+    wrapper.dataset.nav     = controls.nav.value;
+  }
+
+  function applyScheme(name) {
+    const s = SCHEMES[name];
+    controls.shape.value   = s.shape;
+    controls.avail.value   = s.avail;
+    controls.unavail.value = s.unavail;
+    controls.past.value    = s.past;
+    controls.hover.value   = s.hover;
+    controls.today.value   = s.today;
+    controls.nav.value     = s.nav;
+    apply();
+  }
+
+  chips.forEach(btn => {
+    btn.addEventListener('click', () => {
+      chips.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      applyScheme(btn.dataset.preset);
+    });
+  });
+
+  Object.values(controls).forEach(sel => {
+    sel.addEventListener('change', () => {
+      chips.forEach(b => b.classList.remove('active'));
+      apply();
+    });
+  });
+
+  // Boot on Solid
+  document.querySelector('[data-preset="solid"]').classList.add('active');
+  applyScheme('solid');
+
+</script>
+</body>
+</html>
